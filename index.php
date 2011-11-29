@@ -1,8 +1,8 @@
 <?php
 
-require_once('system/core/okapi.php');
-
 define("BASE_PATH", (dirname(__FILE__) . '/'));
+
+require_once(BASE_PATH . '/system/core/okapi.php');
 
 function dump($item, $die=true)
 {
@@ -15,8 +15,8 @@ function dump($item, $die=true)
 
 // dump($_GET);
 
-$okapi = new Okapi();
+$okapi = Okapi::singleton();
 
-
+$okapi->test = 'kaka';
 $okapi->dispatch();
 
