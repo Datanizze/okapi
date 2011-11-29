@@ -9,7 +9,7 @@ class Okapi {
 
 	public function dispatch() {
 		$url = trim($_GET['_url'], '/');
-		list($controller, $action, $parameters) = explode('/', $url);
+		list($controller, $action, $parameters) = explode('/', $url, 3);
 
 		//$okapi->load->$controller;
 		//$okapi->$controller->$action($parameters);
