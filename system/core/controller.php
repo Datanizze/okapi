@@ -1,15 +1,19 @@
 <?php
 
-class Okapi_controller {
+class Controller {
 
 	public $load;
 	public $model;
 
-	protected function __construct() {
+	// TODO: make protectede/private, only inherited controllers should be instansiable
+	public function __construct() {
 	}
 
 	public function index() {
-		echo ' controllers index method called';
+		global $okapi;
+		$okapi->load->model('Model');
+		$data = $okapi->model->getData();
+		$okapi->load->view('View', $data);
 	}
 
 }

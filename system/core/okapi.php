@@ -9,7 +9,10 @@ class Okapi {
 	private static $instance;
 
 	private function __construct() {
-		//$this->load = new Load();
+		$this->instance = &$this;
+		$this->load = new Load();
+		// maybe load some config here later?
+
 	}
 
 	public static function singleton()  
@@ -27,7 +30,7 @@ class Okapi {
 		$url = trim($_GET['_url'], '/');
 		list($controller, $action, $parameters) = explode('/', $url, 3);
 
-		//$okapi->load->$controller;
+		$this->$controller = new Controller();;
 		//$okapi->$controller->$action($parameters);
 
 		// check if there really was a controller specified in the url
@@ -61,8 +64,9 @@ class Okapi {
 				// which is mandatory for ALL controllers to have
 				echo '<br>$this->' . $controller . '->index()';
 			}
-
 		}
+		echo '<pre>';
+		var_dump($this); // dumping the object to see if the the controller was loaded
 	}
 
 	// take care of autoloading missing classes

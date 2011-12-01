@@ -16,7 +16,5 @@ function dump($item, $die=true)
 // dump($_GET);
 
 $okapi = Okapi::singleton();
-
-$okapi->test = 'kaka';
 $okapi->dispatch();
 
