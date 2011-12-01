@@ -1,7 +1,6 @@
 <?php
 
-define("BASE_PATH", (dirname(__FILE__) . '/'));
-
+define("BASE_PATH", (dirname(__FILE__))); 
 require_once(BASE_PATH . '/system/core/okapi.php');
 
 function dump($item, $die=true)

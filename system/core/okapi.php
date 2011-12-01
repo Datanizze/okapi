@@ -3,16 +3,17 @@
 require_once(BASE_PATH . '/system/core/load.php');
 require_once(BASE_PATH . '/system/core/model.php');
 require_once(BASE_PATH . '/system/core/controller.php');
+require_once(BASE_PATH . '/system/core/welcome.php');
 // the almighty core class
 class Okapi {
 	public $load;
 	private static $instance;
+	public $config;
 
 	private function __construct() {
 		$this->instance = &$this;
 		$this->load = new Load();
-		// maybe load some config here later?
-
+		$this->loadConfig();
 	}
 
 	public static function singleton()  
@@ -30,15 +31,20 @@ class Okapi {
 		$url = trim($_GET['_url'], '/');
 		list($controller, $action, $parameters) = explode('/', $url, 3);
 
-		$this->$controller = new Controller();;
-		//$okapi->$controller->$action($parameters);
+		$controller = ucfirst(strtolower($controller));
+		$action = strtolower($action);
 
 		// check if there really was a controller specified in the url
 		// if not, then show welcome-controller.. OR even better,
 		// check config for default controller! (maybe later)
 		if (strlen(trim($controller))>0) {
 			// woho! we've got a controller specified, let's try and load it!
-			echo '<br>$this->load->' .$controller;
+			// first we check if the controller exists
+			if (class_exists($controller)) {
+				$this->$controller = new $controller(); // OBS!, fixed controller loaded for testing purposes.
+			} else { // if not, then die!, though we should probably show a 404 instead.. well well, all in time...
+				die('Fuuuuuuu, no controller named "' . $controller . '" was found.');
+			}
 			// now that the controller is loaded, lets see if any action was specified
 			if (strlen(trim($action))>0) {
 				// we have a small thing called private actions
@@ -48,25 +54,39 @@ class Okapi {
 				// ONE more thing, we do NOT check paramters here, KISS you know...
 				// Let the controller action take care of that!
 				// This is good because we then give the controller
-				// freedom to specify exactly how the parameters should be passed,
+				// freedom to specify exactly how the parameters should be passed/used,
 				// it could for example be in the format p1=val&p2=val2 
 				// or p1/val/p2/val2 or p1=val;p2=val2 and so on...
-				// we are after all only takin a quick look at the request here to
-				// get the ball rolling (and hopefully in the right direction)
+				// we are after all only taking a quick look at the request here to
+				// get the ball rolling (and hopefully in the right direction too).
 				if (substr($action, 0, 1) == '_') {
 					die('crude error reporting in action: ' . $action . ' called was deemed private and thus was NOT called!');
 				} else {
 					// call the method in the controller with possible parameters
-					echo '<br>$this->' . $controller . '->' . $action . '(' .$parameters .')';
+					// all methods should be lowercase!
+					// But first! Let's check if the method really exists in that particular controller
+					if (method_exists($this->$controller, $action)) {
+						$this->$controller->$action($parameters);
+					} else {
+						$this->$controller->index($parameters); // if the method did not exist we send the user to the index method, with the parameters
+					}
 				}
 			} else {
 				// no action specified, using the index-method, 
 				// which is mandatory for ALL controllers to have
-				echo '<br>$this->' . $controller . '->index()';
+				$this->$controller->index();
+			}
+		} else {
+			// try and fetch the default controller from config
+			// if that fails, fall back th the welcome-controller in the core files.
+			if (isset($this->config['default_controller']) && class_exists($this->config['default_controller'])) {
+				$this->Controller = new $this->config['default_controller'];
+				$this->Controller->index();
+			} else {
+				$this->Controller = new Welcome();
+				$this->Controller->index();
 			}
 		}
-		echo '<pre>';
-		var_dump($this); // dumping the object to see if the the controller was loaded
 	}
 
 	// take care of autoloading missing classes
@@ -91,5 +111,17 @@ class Okapi {
 				die("File '$filename' containing class '$className' not found.");
 			}
 		}
+	}
+
+	public function loadConfig() {
+		include_once(BASE_PATH . '/application/config/config.php'); 
+		$this->config = $config;
+		unset($config); // remove the config array var from the config.php file...
+	}
+
+	public function dumpOkapi() {
+		echo '<pre>';
+		print_r($this); // object debugging ;)
+		echo '</pre';
 	}
 }

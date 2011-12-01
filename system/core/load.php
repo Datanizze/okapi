@@ -16,4 +16,5 @@ class Load {
 		// check config if javascript is activate
 		// check config for active theme
 	}
+
 }
