@@ -23,7 +23,6 @@ class Okapi {
 			$obj = __CLASS__;  
 			self::$instance = new $obj;  
 		}  
-
 		return self::$instance;  
 	}
 
@@ -42,7 +41,7 @@ class Okapi {
 			// first we check if the controller exists
 			if (class_exists($controller)) {
 				$this->$controller = new $controller(); // OBS!, fixed controller loaded for testing purposes.
-			} else { // if not, then die!, though we should probably show a 404 instead.. well well, all in time...
+			} else { // if not, then die!, though we should probably show a 404 instead.. well well, all in good time...
 				die('Fuuuuuuu, no controller named "' . $controller . '" was found.');
 			}
 			// now that the controller is loaded, lets see if any action was specified
