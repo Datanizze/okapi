@@ -1,0 +1,6 @@
+* Proper error mangagement, instead of die and such everywhere we should call a static(?) method in okapi that takes care of a sleek error reporting that will be consistent across the system giving easy error handling for developer and administrator.
+* test database class.
+* about views
+  * loading a view, give option to let view take care of everything, or load default <head> and such (a.k.a everything before <body> begins), including meta, css and js...
+  * always load stuff from config, such as if js should be active on page, standard css + any custom theme css, meta tags, give $data option for f.e. if array_key_exists('extra_css') or extra_js or extra_meta and so on, notice extra_ prefix here... they will be iterated over if is_array and added at proper places if present.
+  * if Okapi takes care of everything pre <body>, a title could be passed as $data['title'] (keep it simple, stupid) no special prefix/suffix here since it's quite standard with "title".
