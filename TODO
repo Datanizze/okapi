@@ -1,0 +1,2 @@
+* Proper error mangagement, instead of die and such everywhere we should call a static(?) method in okapi that takes care of a sleek error reporting that will be consistent across the system giving easy error handling for developer and administrator.
+* test database class.
