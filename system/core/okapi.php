@@ -13,7 +13,7 @@ class Okapi {
 	private function __construct() {
 		$this->instance = &$this;
 		$this->load = new Load();
-		$this->loadConfig();
+		$this->load_config();
 	}
 
 	public static function singleton()  
@@ -112,13 +112,17 @@ class Okapi {
 		}
 	}
 
-	public function loadConfig() {
+	public function load_config() {
 		include_once(BASE_PATH . '/application/config/config.php'); 
 		$this->config = $config;
 		unset($config); // remove the config array var from the config.php file...
+
+		if (isset($this->config['environment']) && strtolower($this->config['environment']) == "dev") {
+			error_reporting(-1);
+		}
 	}
 
-	public function dumpOkapi() {
+	public function dump_okapi() {
 		echo '<pre>';
 		print_r($this); // object debugging ;)
 		echo '</pre';
