@@ -49,6 +49,9 @@ class Database {
 			$this->doh("Could not connect to <strong>{$this->server}</strong>.<br /> ({$this->conn->connect_errno}) {$this->connect_error}");
 		}
 
+		// setcharset... could be fetched from config in future but for now we shall force utf-8!
+		$this->db->set_charset("utf8");
+
 		// unset connection data so it can't be var_dump'ed or print_r'd
 		// Don't really know why we do this since the connection info can be found in the $okapi->config... hmm...
 		$this->host='';
