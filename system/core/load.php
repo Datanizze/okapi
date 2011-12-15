@@ -8,13 +8,29 @@ class Load {
 	}
 
 	public function model($model, $db = false) {
-		// if db then load db with default settings from config
+		global $okapi;
+		$model = strtolower($model);
+		$ucmodel = ucfirst($model);
+		// 1. check if db, load db if db
+		// TODO: load db...
+
+		// 2. load the model
+		$okapi->$model = new $ucmodel;
 	}
 
 	public function view($view, $data) {
 		// expand data if is_array
-		// check config if javascript is activate
-		// check config for active theme
-	}
+		extract($data);
 
+		if ($view === 'index.php') {
+			die('No access to view index.php is granted here...');
+		}
+
+		if (file_exists(APPLICATION_PATH . '/views/' . $view . '.php')) {
+			include(APPLICATION_PATH . '/views/' . $view) . '.php';
+			// check config if javascript is activated
+			// check config for active theme
+		}
+
+	}
 }
