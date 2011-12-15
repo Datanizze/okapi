@@ -11,6 +11,8 @@ class Okapi {
 	public $config;
 
 	private function __construct() {
+		// boot up the autoloader
+		spl_autoload_register(array($this, 'autoloader'));
 		$this->instance = &$this;
 		$this->load = new Load();
 		$this->load_config();
@@ -40,7 +42,7 @@ class Okapi {
 			// woho! we've got a controller specified, let's try and load it!
 			// first we check if the controller exists
 			if (class_exists($controller)) {
-				$this->$controller = new $controller(); // OBS!, fixed controller loaded for testing purposes.
+				$this->$controller = new $controller(); 
 			} else { // if not, then die!, though we should probably show a 404 instead.. well well, all in good time...
 				die('Fuuuuuuu, no controller named "' . $controller . '" was found.');
 			}
@@ -89,13 +91,13 @@ class Okapi {
 	}
 
 	// take care of autoloading missing classes
-	function __autoload($className) {
+	private function autoloader($className) {
 		// make sure className is tolower, since all filenames should be lowercase
 		$className = strtolower($className);
 
 		//compose file names for all possible paths...
 		$model_file = BASE_PATH . '/application/models/' . $className . '.php';
-		$controller_file = BASE_PATH . '/application/models/' . $className . '.php';
+		$controller_file = BASE_PATH . '/application/controllers/' . $className . '.php';
 
 		//fetch file
 		if (file_exists($controller_file)) {
@@ -109,6 +111,11 @@ class Okapi {
 				//file does not exist!
 				die("File '$filename' containing class '$className' not found.");
 			}
+		}
+
+		// check and see if the include did declare the class
+		if (!class_exists($className, false)) {
+			trigger_error("Unable to load class: $className", E_USER_WARNING);
 		}
 	}
 
