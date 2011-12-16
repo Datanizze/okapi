@@ -6,7 +6,6 @@ require_once(BASE_PATH . '/system/core/controller.php');
 require_once(BASE_PATH . '/system/core/welcome.php');
 // the almighty core class
 class Okapi {
-	public $load;
 	private static $instance;
 	public $config;
 
@@ -14,7 +13,6 @@ class Okapi {
 		// boot up the autoloader
 		spl_autoload_register(array($this, 'autoloader'));
 		$this->instance = &$this;
-		$this->load = new Load();
 		$this->load_config();
 	}
 
@@ -96,21 +94,16 @@ class Okapi {
 		$className = strtolower($className);
 
 		//compose file names for all possible paths...
-		$model_file = BASE_PATH . '/application/models/' . $className . '.php';
 		$controller_file = BASE_PATH . '/application/controllers/' . $className . '.php';
 
+		// TODO: add stuff to config for user defined subfolders to look for controllers in, then loop over every folder after standard folder....
 		//fetch file
 		if (file_exists($controller_file)) {
 			//get file
 			include_once($controller_file);
 		} else {
-			if (file_exists($model_file)) {
-
-				include_once($model_file);
-			} else {
 				//file does not exist!
 				die("File '$filename' containing class '$className' not found.");
-			}
 		}
 
 		// check and see if the include did declare the class

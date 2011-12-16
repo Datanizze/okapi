@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 define("BASE_PATH", (dirname(__FILE__))); 
 define("APPLICATION_PATH", BASE_PATH . '/application');

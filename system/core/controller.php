@@ -3,17 +3,19 @@
 class Controller {
 
 	public $load;
-	public $model;
 
-	// TODO: make protectede/private, only inherited controllers should be instansiable
 	public function __construct() {
+		global $okapi;
+		$this->load = new load(&$this);
+		$this->config = &$okapi->config;
+		
+		// do something with themes here...
 	}
 
 	public function index() {
-		global $okapi;
-		$okapi->load->model('Model');
-		$data = $okapi->model->getData();
-		$okapi->load->view('View', $data);
+		$this->load->model('model');
+		$data = $this->model->getData();
+		$this->load->view('View', $data);
 	}
 
 }
