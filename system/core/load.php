@@ -44,6 +44,9 @@ class Load {
 
 		$model = ucfirst($model);
 		$this->contr->$name = new $model;
+		
+		// let's give the model an instance of load to, so it can load helpers
+		$this->contr->$name->load = new Load($this->contr->$name);
 
 		// load database instance into $this->contr->db
 		if ($db) {
@@ -51,10 +54,12 @@ class Load {
 		}
 	}
 
-	public function view($view, $data) {
+	public function view($view, $data, $extract = true) {
 		// expand data if is_array
-		extract($data);
-
+		if ($extract) {
+			extract($data);
+		}
+		
 		// TODO: add subfolder checking like in the model loading...
 		if ($view === 'index.php') {
 			die('No access to view index.php is granted here...');
@@ -66,7 +71,6 @@ class Load {
 			// check config for active theme
 		}
 	}
-
 
 	public function helper($helper) {
 		$path = '';
