@@ -28,7 +28,7 @@ class Okapi {
 
 	public function dispatch() {
 		$url = trim($_GET['_url'], '/');
-		list($controller, $action, $parameters) = explode('/', $url, 3);
+		@list($controller, $action, $parameters) = explode('/', $url, 3);
 
 		$controller = ucfirst(strtolower($controller));
 		$action = strtolower($action);
@@ -67,7 +67,12 @@ class Okapi {
 					if (method_exists($this->$controller, $action)) {
 						$this->$controller->$action($parameters);
 					} else {
-						$this->$controller->index($parameters); // if the method did not exist we send the user to the index method, with the parameters
+						// sloppy 3 part devs may think the index-method is not needed, we'll show them!
+						if (method_exists($this->$controller, index)) {
+							$this->$controller->index($parameters); // if the method did not exist we send the user to the index method, with the parameters
+						} else {
+							die("No index method found in $controller, please fix!");
+						}
 					}
 				}
 			} else {
@@ -102,8 +107,8 @@ class Okapi {
 			//get file
 			include_once($controller_file);
 		} else {
-				//file does not exist!
-				die("File '$filename' containing class '$className' not found.");
+			//file does not exist!
+			die("File '{$controller_file}' containing class '$className' not found.");
 		}
 
 		// check and see if the include did declare the class

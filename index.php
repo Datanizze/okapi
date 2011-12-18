@@ -3,6 +3,12 @@ session_start();
 
 define("BASE_PATH", (dirname(__FILE__))); 
 define("APPLICATION_PATH", BASE_PATH . '/application');
+define("ENVIRONMENT", 'dev');
+
+if (ENVIRONMENT === 'dev') {
+	error_reporting(E_ALL);
+	ini_set('display_errors', 'On');
+}
 require_once(BASE_PATH . '/system/core/okapi.php');
 
 function dump($item, $die=true)

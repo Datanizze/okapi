@@ -6,9 +6,8 @@ class Controller {
 
 	public function __construct() {
 		global $okapi;
-		$this->load = new load(&$this);
+		$this->load = new load($this);
 		$this->config = &$okapi->config;
-		
 		// do something with themes here...
 	}
 

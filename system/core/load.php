@@ -27,14 +27,14 @@ class Load {
 		}
 
 		// check if a resource by the name $name already exists.
-		if ($okapi->$name) {
-			die("A resource with the name $name as already been declared.");
+		if (@$okapi->$name) {
+			@die("A resource with the name $name as already been declared.");
 		}
 
 		$model = strtolower($model);
 
 		// check if model is already loaded or something... then don't load it...
-		if (class_exists(ucfirst($model))) {
+		if (class_exists(ucfirst($model), false)) {
 		} else if (!file_exists(APPLICATION_PATH . '/models/' . $path . $model . '.php')) {
 			echo 'file containing model ' . $model . ' was not found!';
 			continue;
@@ -42,11 +42,13 @@ class Load {
 			require_once(APPLICATION_PATH . '/models/' . $path . $model . '.php');
 		}
 
-
-		// TODO: load db here?
-
 		$model = ucfirst($model);
 		$this->contr->$name = new $model;
+
+		// load database instance into $this->contr->db
+		if ($db) {
+			$this->load_database($name);
+		}
 	}
 
 	public function view($view, $data) {
@@ -63,6 +65,47 @@ class Load {
 			// check config if javascript is activated
 			// check config for active theme
 		}
+	}
 
+
+	public function helper($helper) {
+		$path = '';
+		if (($last_slash = strrpos($helper, '/')) !== false) {
+			// get path... everything in front of the last slash
+			$path = substr($helper, 0, $last_slash+1);
+			// get the model
+			$helper = substr($helper, $last_slash+1);
+		}
+
+		// check if a resource by the name $name already exists.
+		if (@$this->contr->$helper || @$okapi->$helper) {
+			die("A helper with the name $helper as already been declared.");
+		}
+
+		$helper = strtolower($helper);
+
+		if (file_exists(BASE_PATH . '/system/helpers/' . $path . $helper . '.php')) {
+			include_once(BASE_PATH . 'system/helpers/' . $path . $helper . '.php');
+		} else {
+			die("could not find any helper with the name '$helper'");
+		}
+
+		if ($helper == 'database') {
+			$this->load_database($helper);
+		} else {
+			$helperClass = ucfirst($helper);
+			$this->contr->$helper = new $helperClass;
+		}
+	}
+	
+	private function load_database($name = NULL) {
+		if (!class_exists('Database', false)) {
+			require_once(BASE_PATH . '/system/helpers/database.php');
+		}
+		if ($name != NULL) {
+			$this->contr->$name->db = new Database();
+		} else {
+			$this->contr->db = new Database();
+		}
 	}
 }
