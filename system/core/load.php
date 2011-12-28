@@ -3,7 +3,6 @@
 class Load {
 
 	public function __construct(&$controller) {
-		global $okapi;
 		$this->contr = &$controller;
 	}
 
@@ -44,7 +43,7 @@ class Load {
 
 		$model = ucfirst($model);
 		$this->contr->$name = new $model;
-		
+
 		// let's give the model an instance of load to, so it can load helpers
 		$this->contr->$name->load = new Load($this->contr->$name);
 
@@ -52,6 +51,9 @@ class Load {
 		if ($db) {
 			$this->load_database($name);
 		}
+
+		// load the url helper by default since it is quite useful for parameter extraction.
+		$this->contr->$name->load->helper('url');
 	}
 
 	public function view($view, $data, $extract = true) {
@@ -60,8 +62,7 @@ class Load {
 		if ($extract) {
 			extract($data);
 		}
-		
-		// TODO: add subfolder checking like in the model loading...
+
 		if ($view === 'index.php') {
 			die('No access to view index.php is granted here...');
 		}
@@ -69,11 +70,12 @@ class Load {
 		if (file_exists(APPLICATION_PATH . '/themes/' . $okapi->config['theme'] . '/'. $view . '.php')) {
 			include(APPLICATION_PATH . '/themes/' . $okapi->config['theme'] . '/' . $view) . '.php';
 			// check config if javascript is activated
-			// check config for active theme
 		}
 	}
 
-	public function helper($helper) {
+	// $model; set if you want to load the helper into a model instead of the calling controller
+	public function helper($helper, $model='') {
+		$model = empty($model) ? '' : strtolower($model);
 		$path = '';
 		if (($last_slash = strrpos($helper, '/')) !== false) {
 			// get path... everything in front of the last slash
@@ -82,32 +84,31 @@ class Load {
 			$helper = substr($helper, $last_slash+1);
 		}
 
-		// check if a resource by the name $name already exists.
-		if (@$this->contr->$helper || @$okapi->$helper) {
-			die("A helper with the name $helper as already been declared.");
-		}
-
 		$helper = strtolower($helper);
 
 		if (file_exists(BASE_PATH . '/system/helpers/' . $path . $helper . '.php')) {
-			include_once(BASE_PATH . 'system/helpers/' . $path . $helper . '.php');
+			include_once(BASE_PATH . '/system/helpers/' . $path . $helper . '.php');
 		} else {
 			die("could not find any helper with the name '$helper'");
 		}
 
 		if ($helper == 'database') {
-			$this->load_database($helper);
+			$this->load_database($model);
 		} else {
 			$helperClass = ucfirst($helper);
-			$this->contr->$helper = new $helperClass;
+			if (empty($model)) {
+				$this->contr->$helper = new $helperClass;
+			} else {
+				$this->contr->$model->$helper = new $helperClass;
+			}
 		}
 	}
-	
-	private function load_database($name = NULL) {
+
+	private function load_database($name = '') {
 		if (!class_exists('Database', false)) {
 			require_once(BASE_PATH . '/system/helpers/database.php');
 		}
-		if ($name != NULL) {
+		if ($name != '') {
 			$this->contr->$name->db = new Database();
 		} else {
 			$this->contr->db = new Database();
