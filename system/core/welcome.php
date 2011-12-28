@@ -3,7 +3,11 @@
 class Welcome extends Controller {
 
 	public function index() {
-		echo 'This is the welcome controller speaking';
+		$args = func_get_args();
+		if (count($args)) 
+			echo $args[0];
+		else
+			echo 'This is the welcome controller speaking';
 	}
 
 }

@@ -12,9 +12,7 @@ class Controller {
 	}
 
 	public function index() {
-		$this->load->model('model');
-		$data = $this->model->getData();
-		$this->load->view('View', $data);
+		echo 'This is the index method in the core controller class, you really should override this!';
 	}
 
 	// magic overloading for showing 404's when accessing methods that does not exist...

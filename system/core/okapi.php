@@ -59,11 +59,10 @@ class Okapi {
 				} else {
 					// no controller, no canurl... send everything to the default controller, let the def controller take care of this load now...
 					$parameters = $action . '/' . $parameters;
-					$action = $controller;
+					$action = strtolower($controller);
 					$controller = $this->config['default_controller'];
 					$this->dispatch("{$controller}/{$action}/{$parameters}");
 				}
-				exit;
 			}
 			// now that the controller is loaded, lets see if any action was specified
 			if (strlen(trim($action))>0) {
@@ -85,6 +84,7 @@ class Okapi {
 					// call the method in the controller with possible parameters
 					// no longer checking if the method exists since a magic __call in the base controller class takes care of that now...
 					$this->$controller->$action($parameters);
+					exit;
 				}
 			} else {
 				// no action specified, using the index-method, 
@@ -99,7 +99,7 @@ class Okapi {
 				$this->Controller->index();
 			} else {
 				$this->Controller = new Welcome();
-				$this->Controller->index();
+				$this->Controller->index('No specified valid controller found so the welcome controller took over...');
 			}
 		}
 	}
@@ -121,11 +121,11 @@ class Okapi {
 			$res = true;
 		} else {
 			//file does not exist!
+			$res = false;
 		}
 
 		// check and see if the include did declare the class
 		if (!class_exists($className, false)) {
-			trigger_error("Unable to load class: $className", E_USER_WARNING);
 			$res = false;
 		}
 		return $res;

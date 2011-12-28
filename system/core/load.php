@@ -35,8 +35,7 @@ class Load {
 		// check if model is already loaded or something... then don't load it...
 		if (class_exists(ucfirst($model), false)) {
 		} else if (!file_exists(APPLICATION_PATH . '/models/' . $path . $model . '.php')) {
-			echo 'file containing model ' . $model . ' was not found!';
-			continue;
+			die('file containing model ' . $model . ' was not found!');
 		} else {
 			require_once(APPLICATION_PATH . '/models/' . $path . $model . '.php');
 		}
@@ -44,7 +43,7 @@ class Load {
 		$model = ucfirst($model);
 		$this->contr->$name = new $model;
 
-		// let's give the model an instance of load to, so it can load helpers
+		// let's give the model an instance of load too, so it can load helpers
 		$this->contr->$name->load = new Load($this->contr->$name);
 
 		// load database instance into $this->contr->db
@@ -56,10 +55,10 @@ class Load {
 		$this->contr->$name->load->helper('url');
 	}
 
-	public function view($view, $data, $extract = true) {
+	public function view($view, $data=null, $extract = true) {
 		global $okapi;
 		// expand data if is_array
-		if ($extract) {
+		if ($data != null && $extract) {
 			extract($data);
 		}
 
