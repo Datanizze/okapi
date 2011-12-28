@@ -36,8 +36,11 @@ class Database {
 	public function query($query, $dbg = false) {
 		$this->nrOfExecutedQueries++;
 		$this->lastQueryResult = $this->conn->query($query);
-		
 		return $this->lastQueryResult;
+	}
+
+	public function escape($string) {
+		return $this->conn->real_escape_string($string);
 	}
 
 	public function freeResult($result = NULL) {

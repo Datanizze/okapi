@@ -17,4 +17,8 @@ class Controller {
 		$this->load->view('View', $data);
 	}
 
+	// magic overloading for showing 404's when accessing methods that does not exist...
+	public function __call($name, $arguments) {
+		die("404, <strong>{$name}</strong> not found... Walk away... Just walk away before something really bad happens...");
+	}
 }

@@ -55,6 +55,7 @@ class Load {
 	}
 
 	public function view($view, $data, $extract = true) {
+		global $okapi;
 		// expand data if is_array
 		if ($extract) {
 			extract($data);
@@ -65,8 +66,8 @@ class Load {
 			die('No access to view index.php is granted here...');
 		}
 
-		if (file_exists(APPLICATION_PATH . '/views/' . $view . '.php')) {
-			include(APPLICATION_PATH . '/views/' . $view) . '.php';
+		if (file_exists(APPLICATION_PATH . '/themes/' . $okapi->config['theme'] . '/'. $view . '.php')) {
+			include(APPLICATION_PATH . '/themes/' . $okapi->config['theme'] . '/' . $view) . '.php';
 			// check config if javascript is activated
 			// check config for active theme
 		}

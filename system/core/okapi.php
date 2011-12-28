@@ -4,6 +4,7 @@ require_once(BASE_PATH . '/system/core/load.php');
 require_once(BASE_PATH . '/system/core/model.php');
 require_once(BASE_PATH . '/system/core/controller.php');
 require_once(BASE_PATH . '/system/core/welcome.php');
+
 // the almighty core class
 class Okapi {
 	private static $instance;
@@ -14,6 +15,10 @@ class Okapi {
 		spl_autoload_register(array($this, 'autoloader'));
 		$this->instance = &$this;
 		$this->load_config();
+		if (!isset($this->config['theme']) && !is_dir(BASE_PATH . '/application/themes/' . $this->config['theme'])) {
+			echo ' faulty theme settings, default themes is used...';
+			$this->config['theme'] = 'default';
+		}
 	}
 
 	public static function singleton()  
@@ -26,23 +31,39 @@ class Okapi {
 		return self::$instance;  
 	}
 
-	public function dispatch() {
-		$url = trim($_GET['_url'], '/');
+	public function dispatch($passed_url = '') {
+		$url = empty($passed_url) ? trim($_GET['_url'], '/') : trim($passed_url, '/');
 		@list($controller, $action, $parameters) = explode('/', $url, 3);
 
 		$controller = ucfirst(strtolower($controller));
 		$action = strtolower($action);
-
 		// check if there really was a controller specified in the url
 		// if not, then show welcome-controller.. OR even better,
 		// check config for default controller! (maybe later)
 		if (strlen(trim($controller))>0) {
 			// woho! we've got a controller specified, let's try and load it!
 			// first we check if the controller exists
-			if (class_exists($controller)) {
+			if (@class_exists($controller)) {
 				$this->$controller = new $controller(); 
-			} else { // if not, then die!, though we should probably show a 404 instead.. well well, all in good time...
-				die('Fuuuuuuu, no controller named "' . $controller . '" was found.');
+			} else { // So the specified controller doesn't exits... 
+				// check if it's a cononical url first 
+				// and if not then send the $controller as $action to the default controller and prepend $action to $parameters.
+				if ($can_url = $this->get_canonical($controller)) {
+					if ($can_url->external == 1) {
+						// external link... just send away!
+						header('location: ' . $can_url->realurl);
+					} else {
+						// internal link.. just call the dispatch method again with realurl as parameter
+						$this->dispatch($can_url->realurl);
+					}
+				} else {
+					// no controller, no canurl... send everything to the default controller, let the def controller take care of this load now...
+					$parameters = $action . '/' . $parameters;
+					$action = $controller;
+					$controller = $this->config['default_controller'];
+					$this->dispatch("{$controller}/{$action}/{$parameters}");
+				}
+				exit;
 			}
 			// now that the controller is loaded, lets see if any action was specified
 			if (strlen(trim($action))>0) {
@@ -59,21 +80,11 @@ class Okapi {
 				// we are after all only taking a quick look at the request here to
 				// get the ball rolling (and hopefully in the right direction too).
 				if (substr($action, 0, 1) == '_') {
-					die('crude error reporting in action: ' . $action . ' called was deemed private and thus was NOT called!');
+					die('crude error reporting in action: ' . $action . ' called was deemed private (starting with _) and thus was NOT called!');
 				} else {
 					// call the method in the controller with possible parameters
-					// all methods should be lowercase!
-					// But first! Let's check if the method really exists in that particular controller
-					if (method_exists($this->$controller, $action)) {
-						$this->$controller->$action($parameters);
-					} else {
-						// sloppy 3 part devs may think the index-method is not needed, we'll show them!
-						if (method_exists($this->$controller, index)) {
-							$this->$controller->index($parameters); // if the method did not exist we send the user to the index method, with the parameters
-						} else {
-							die("No index method found in $controller, please fix!");
-						}
-					}
+					// no longer checking if the method exists since a magic __call in the base controller class takes care of that now...
+					$this->$controller->$action($parameters);
 				}
 			} else {
 				// no action specified, using the index-method, 
@@ -95,6 +106,7 @@ class Okapi {
 
 	// take care of autoloading missing classes
 	private function autoloader($className) {
+		$res = false;
 		// make sure className is tolower, since all filenames should be lowercase
 		$className = strtolower($className);
 
@@ -106,15 +118,17 @@ class Okapi {
 		if (file_exists($controller_file)) {
 			//get file
 			include_once($controller_file);
+			$res = true;
 		} else {
 			//file does not exist!
-			die("File '{$controller_file}' containing class '$className' not found.");
 		}
 
 		// check and see if the include did declare the class
 		if (!class_exists($className, false)) {
 			trigger_error("Unable to load class: $className", E_USER_WARNING);
+			$res = false;
 		}
+		return $res;
 	}
 
 	public function load_config() {
@@ -125,6 +139,15 @@ class Okapi {
 		if (isset($this->config['environment']) && strtolower($this->config['environment']) == "dev") {
 			error_reporting(-1);
 		}
+	}
+
+	private function get_canonical($can) {
+		require_once(BASE_PATH . '/system/helpers/database.php');
+		$db = new Database();
+		$db->connect();
+		$can = $db->escape($can);
+		return $db->query("SELECT * FROM canonical_urls WHERE canurl = '{$can}' AND active='1' ORDER BY created DESC LIMIT 1")->fetch_object();
+
 	}
 
 	public function dump_okapi() {
