@@ -1,0 +1,33 @@
+.red {
+	background-color: red;
+}
+
+div#container {
+	width: 950px;
+	margin: 0 auto;
+	padding: 0.5em;
+}
+
+ul.nav {
+	display: block;
+	float: left;
+	margin: 0 10px 0 0;
+}
+
+ul.nav > li {
+	display: block;
+	float: left;
+}
+
+ul.nav > li >a {
+	display: block;
+	float: none;
+	padding: 10px 10px 11px;
+	line-height: 19px;
+	text-decoration: none;
+}
+
+ul.nav > li > a:hover {
+	color: #E4287C;
+	text-decoration: none;
+}
