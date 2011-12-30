@@ -1,9 +1,10 @@
 <?php 
-// require the base files (will do it this way (manually) for now, might add this to the autoload function later
+// require the base files (will do it this way (manually) for now, might add this to the autoload function later.. TODO: move to a boostrap.php file...
 require_once(BASE_PATH . '/system/core/load.php');
 require_once(BASE_PATH . '/system/core/model.php');
 require_once(BASE_PATH . '/system/core/controller.php');
 require_once(BASE_PATH . '/system/core/welcome.php');
+require_once(BASE_PATH . '/system/core/common.php');
 
 // the almighty core class
 class Okapi {
@@ -32,7 +33,7 @@ class Okapi {
 	}
 
 	public function dispatch($passed_url = '') {
-		$url = empty($passed_url) ? trim($_GET['_url'], '/') : trim($passed_url, '/');
+		$url = empty($passed_url) ? isset($_GET['_url']) ? trim($_GET['_url'], '/') : '' : trim($passed_url, '/');
 		@list($controller, $action, $parameters) = explode('/', $url, 3);
 
 		$controller = ucfirst(strtolower($controller));

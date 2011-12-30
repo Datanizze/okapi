@@ -24,4 +24,10 @@ class url {
 		}
 		return $return;
 	}
+	
+	public function theme_base() {
+		global $okapi;
+		echo BASE_PATH . '/application/themes/' . $okapi->config['theme'];
+	}
+
 }

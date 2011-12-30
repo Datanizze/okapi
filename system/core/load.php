@@ -68,7 +68,6 @@ class Load {
 
 		if (file_exists(APPLICATION_PATH . '/themes/' . $okapi->config['theme'] . '/'. $view . '.php')) {
 			include(APPLICATION_PATH . '/themes/' . $okapi->config['theme'] . '/' . $view) . '.php';
-			// check config if javascript is activated
 		}
 	}
 
