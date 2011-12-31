@@ -36,3 +36,19 @@ function generate_menu($menu_items, $active=null, $nav_class='okapi-nav') {
 		echo "<nav><a href=\"#\">Faulty/No menu</a></nav>";
 	}
 }
+
+// simply tries to include header.php if found in the theme's directory
+function get_header() {
+	if (file_exists(BASE_PATH . path_to($theme) . '/header.php'))
+		include(BASE_PATH . path_to($theme) . '/header.php');
+	else
+		echo '<p>get_header() failed, no header.php found in the theme\'s base directory</p>';
+}
+
+// same as get_header but for footer.php
+function get_footer() {
+	if (file_exists(BASE_PATH . path_to($theme) . '/footer.php'))
+		include(BASE_PATH . path_to($theme) . '/footer.php');
+	else
+		echo '<p>get_footer() failed, no footer.php found in the theme\'s base directory</p>';
+}

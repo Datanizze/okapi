@@ -34,6 +34,8 @@ class Database {
 	}
 	
 	public function query($query, $dbg = false) {
+		if (!isset($this->conn)) 
+			$this->connect();
 		$this->nrOfExecutedQueries++;
 		$this->lastQueryResult = $this->conn->query($query);
 		return $this->lastQueryResult;

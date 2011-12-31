@@ -1,33 +1,27 @@
-.red {
-	background-color: red;
-}
-
 div#container {
 	width: 950px;
 	margin: 0 auto;
 	padding: 0.5em;
 }
 
-ul.nav {
-	display: block;
-	float: left;
-	margin: 0 10px 0 0;
+nav {
+	font-family:arial;
+	font-weight:bold;
+	font-size:1.2em;
+	padding:2px 8px;
+	background:#333;
+	border:2px solid #858585;
 }
 
-ul.nav > li {
-	display: block;
-	float: left;
+nav > a {
+	padding:6px 8px;
+	text-decoration:none;
+	border:2px solid transparent;
+	color:#fff;
 }
 
-ul.nav > li >a {
-	display: block;
-	float: none;
-	padding: 10px 10px 11px;
-	line-height: 19px;
-	text-decoration: none;
-}
-
-ul.nav > li > a:hover {
-	color: #E4287C;
-	text-decoration: none;
+nav a:hover, nav > a.active {
+	color: #fff;
+	background:#858585;
+	border:2px solid #333;
 }
