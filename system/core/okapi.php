@@ -118,11 +118,24 @@ class Okapi {
 		//fetch file
 		if (file_exists($controller_file)) {
 			//get file
-			include_once($controller_file);
+			require_once($controller_file);
 			$res = true;
 		} else {
-			//file does not exist!
-			$res = false;
+			// check subfolders specified in config if there's any mathing controllers there
+			// first, extract and turn the comma separated list into an array.
+			$subfolders = explode(',', $this->config['controller_subfolders']);
+			// do a while-loop over the subfolders... Doing while instead of for because if found, while will stop but for will keep looping when unneccessary.
+			// no need for checking if any subfolders are specified in config since array_shift returns null if not array or array is empty.
+			$found = false;
+			while(!$found && $subfolder = array_shift($subfolders)) {
+				if (file_exists(BASE_PATH . '/application/controllers/' . $subfolder . '/' . $className . '.php')) {
+					require_once(BASE_PATH . '/application/controllers/' . $subfolder . '/' . $className . '.php');
+					$found = true;
+				}
+			}
+			if (!$found)
+				//file does not exist!
+				$res = false;
 		}
 
 		// check and see if the include did declare the class
