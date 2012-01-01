@@ -16,7 +16,7 @@ class Cms_main extends Controller {
 	public function start(/*$stuff=null*/) {
 		$this->_load_model();
 		// everything but the content view will probably be included by the content view itself for exat positioning and all that.. we will however send all data for the page to content...
-		$this->load->view('header', $this->data);
+		$this->load->view('start', $this->data);
 		//$this->load->view('menu');
 		//$this->load->view('content');
 		//$this->load->view('footer');

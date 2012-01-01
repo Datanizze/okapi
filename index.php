@@ -1,6 +1,8 @@
 <?php
 session_start();
 
+date_default_timezone_set('Europe/Stockholm');
+
 define("BASE_PATH", (dirname(__FILE__))); 
 define("APPLICATION_PATH", BASE_PATH . '/application');
 define("ENVIRONMENT", 'dev');

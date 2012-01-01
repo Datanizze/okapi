@@ -10,13 +10,12 @@
 	<!--[if IE]><link rel="stylesheet" href="<?php echo $tp; ?>/css/blueprint/ie.css" type="text/css" media="screen, projection" /><![endif]-->
 </head>
 <body>
-<div id="container">
+<div id="okapi-wrapper"> <!-- wrapper div -->
 	<div class="span-24"> <!-- header div -->
 		<h1><?php echo isset($header_title) ? $header_title : 'Header Title';?></h1>
 	</div> <!-- header div -->
-	<div class="span-24"> <!-- menu div -->
+	<div class="span-24 okapi-menu-wrapper"> <!-- menu div -->
 		<?php 
-			@generate_menu($menu, 'about');
+			@generate_menu($menu);
 		?>
 	</div> <!-- menu div -->
-</div>

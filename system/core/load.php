@@ -58,6 +58,7 @@ class Load {
 	public function view($view, $data=null, $extract = true) {
 		global $okapi;
 		// expand data if is_array
+
 		if ($data != null && $extract) {
 			extract($data);
 		}

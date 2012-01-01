@@ -16,9 +16,11 @@ function path_to($name) {
 	unset($okapi);
 }
 
-function generate_menu($menu_items, $active=null, $nav_class='okapi-nav') {
+function generate_menu($menu_items, $nav_class='okapi-nav') {
 	if (isset($menu_items) && is_array($menu_items)) {
 		$class_nav = empty($nav_class) ? '' : ' class="' . $nav_class . '"';
+
+		$active = get_active_menu_item();
 
 		echo "<nav{$class_nav}>";
 		foreach($menu_items as $item) {
@@ -41,20 +43,17 @@ function generate_menu($menu_items, $active=null, $nav_class='okapi-nav') {
 	} else {
 		echo "<nav><a href=\"#\">Faulty/No menu</a></nav>";
 	}
+
 }
 
-// simply tries to include header.php if found in the theme's directory
-function get_header() {
-	if (file_exists(BASE_PATH . path_to($theme) . '/header.php'))
-		include(BASE_PATH . path_to($theme) . '/header.php');
-	else
-		echo '<p>get_header() failed, no header.php found in the theme\'s base directory</p>';
+function set_active_menu_item($item) {
+	$_REQUEST['active_menu_item'] = $item;
 }
 
-// same as get_header but for footer.php
-function get_footer() {
-	if (file_exists(BASE_PATH . path_to($theme) . '/footer.php'))
-		include(BASE_PATH . path_to($theme) . '/footer.php');
-	else
-		echo '<p>get_footer() failed, no footer.php found in the theme\'s base directory</p>';
+function get_active_menu_item() {
+	$retval = '';
+	// checks if a variable has already been declared, overriding the $active, ugly, I know
+	if (isset($_REQUEST['active_menu_item']))
+		$retval = $_REQUEST['active_menu_item'];
+	return $retval;
 }
