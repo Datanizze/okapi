@@ -11,7 +11,7 @@ class Cms_model extends Model {
 
 	public function get_menu() {
 		$retval = array('menu' => array());
-		$res = $this->db->query("SELECT * FROM main_menu ORDER BY 'weight' DESC,'added' DESC");
+		$res = $this->db->query("SELECT * FROM `main_menu` WHERE `alive`=1 ORDER BY `weight` DESC");
 		
 		while($row = $res->fetch_assoc()) {
 			array_push($retval['menu'], $row);

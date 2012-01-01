@@ -4,24 +4,48 @@ div#container {
 	padding: 0.5em;
 }
 
-nav {
-	font-family:arial;
+.okapi-nav {
+	border-radius: 4px;
 	font-weight:bold;
-	font-size:1.2em;
+	font-size:1.3em;
 	padding:2px 8px;
-	background:#333;
-	border:2px solid #858585;
+	background:#222;
+	background: -moz-linear-gradient(top, #444444 0%, #222 100%); /* FF3.6+ */
+	background: -webkit-linear-gradient(top, #444444 0%,#222 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, #444444 0%,#222 100%); /* Opera 11.10+ */
+	background: linear-gradient(top, #444444 0%,#222 100%); /* W3C */
+	border-style: solid;
+	border-width: 1px 0;
+	border-color: #1a1a1a #1a1a1a #000000;
+	box-shadow: inset 0px 1px 1px rgba(255,255,255,0.2);
+	text-shadow: -1px -1px 0 rgba(0, 0, 0, 1);
 }
 
-nav > a {
-	padding:6px 8px;
-	text-decoration:none;
-	border:2px solid transparent;
-	color:#fff;
-}
-
-nav a:hover, nav > a.active {
+.okapi-nav a {
 	color: #fff;
-	background:#858585;
-	border:2px solid #333;
+	padding:4px 8px;
+	margin: 0 3px;
+	text-decoration:none;
+}
+
+.okapi-nav a:hover, .okapi-nav > a.active {
+	color: #000;
+	padding: 4px 8px;
+	text-shadow: -1px -1px 0 rgba(552, 255, 255, 1);
+
+	background: #E0E0E0;
+	background: -moz-linear-gradient(top, #F2F2F2 0%, #d5d5d5 100%); /* FF3.6+ */
+	background: -webkit-linear-gradient(top, #F2F2F2 0%,#d5d5d5 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, #F2F2F2 0%,#d5d5d5 100%); /* Opera 11.10+ */
+	background: linear-gradient(top, #F2F2F2 0%,#d5d5d5 100%); /* W3C */
+	border-style: solid;
+	border-radius: 3px;
+	border-width: 1px 0;
+	border-color: #000 transparent #C9C9C9;
+
+	box-shadow: inset 0px -1px 5px rgba(255,255,255,1);
+}
+
+.okapi-nav a > img {
+	width: 12px;
 }

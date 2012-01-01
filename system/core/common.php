@@ -3,8 +3,8 @@
 function path_to($name) {
 	$okapi = Okapi::singleton();
 	$paths = array();
-	$paths['theme'] = '/application/themes/' . $okapi->config['theme'];
-	$paths['core'] = '/system/core';
+	$paths['theme'] = 'application/themes/' . $okapi->config['theme'];
+	$paths['core'] = 'system/core';
 	switch ($name) {
 	case 'theme':
 	case 'core':
@@ -22,14 +22,20 @@ function generate_menu($menu_items, $active=null, $nav_class='okapi-nav') {
 
 		echo "<nav{$class_nav}>";
 		foreach($menu_items as $item) {
+			$external = '';
+			$external_icon =''; // TODO: add setting for this in config, you might not want an icon for external links...
+			if ($item['external'] == 1) {
+				$external_icon = ' <img src="' . path_to('theme') . '/img/external_link_icon.png" alt="opens in new tab" />';
+				$external = ' target="_BLANK"';
+			}
 			$title = '';
 			if (isset($item['title']) && !empty($item['title']))
 				$title = " title=\"{$item['title']}\"";
 
 			if ($active != null && strtolower($active) == strtolower($item['text']))
-				echo "<a href=\"{$item['url']}\" class=\"active\"{$title}>{$item['text']}</a>";
+				echo "<a href=\"{$item['url']}\" class=\"active\"{$title}{$external}>{$item['text']}</a>";
 			else
-				echo "<a href=\"{$item['url']}\"{$title}>{$item['text']}</a>";
+				echo "<a href=\"{$item['url']}\"{$title}{$external}>{$item['text']}{$external_icon}</a>";
 		}
 		echo "</ul>";
 	} else {
