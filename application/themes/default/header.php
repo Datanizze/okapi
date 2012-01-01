@@ -2,19 +2,43 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<title><?php echo isset($site['title']) ? $site['title'] : 'Page Title Not Set';?></title>
 	<meta charset="UTF-8" />
-	<title><?php echo isset($title) ? $title : 'Page Title Not Set';?></title>
+	<?php
+	if (isset($site) && isset($site['meta'])) {
+		foreach ($site['meta'] as $title => $content) {
+			echo "<meta title=\"{$title}\" content=\"{$content}\">\n\t";
+		}
+	}
+	?>
+
 	<link rel="stylesheet" href="<?php echo $tp; ?>/css/blueprint/screen.css" type="text/css" media="screen, projection" />  
 	<link rel="stylesheet" href="<?php echo $tp; ?>/css/blueprint/print.css" type="text/css" media="print" />  
 	<link rel="stylesheet" href="<?php echo $tp; ?>/css/okapi_default.css" type="text/css" media="screen, projection" />
 	<!--[if IE]><link rel="stylesheet" href="<?php echo $tp; ?>/css/blueprint/ie.css" type="text/css" media="screen, projection" /><![endif]-->
+	<?php
+	if (isset($site) && isset($site['js'])) {
+		foreach ($site['js'] as $src) {
+			echo "<script src=\"{$src}\"></script>\n\t";
+		}
+	}
+	?>
+
+	<?php
+	if (isset($site) && isset($site['css'])) {
+		foreach ($site['css'] as $src) {
+			echo "<link rel=\"stylesheet\" href=\"{$src}\" type=\"text/css\" media=\"screen, projection\" />\n\t";
+	  
+		}
+	}
+	?>
 </head>
 <body>
 <div id="okapi-wrapper"> <!-- wrapper div -->
 	<div class="span-24"> <!-- header div -->
-		<h1><?php echo isset($header_title) ? $header_title : 'Header Title';?></h1>
+		<?php echo isset($site['header']) ? $site['header'] : '<h1>Header Title</h1>';?>
 	</div> <!-- header div -->
-	<div class="span-24 okapi-menu-wrapper"> <!-- menu div -->
+	<div class="span-24 okapi-menu-wrapper"><!-- menu div -->
 		<?php 
 			@generate_menu($menu);
 		?>

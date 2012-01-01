@@ -39,7 +39,7 @@ function generate_menu($menu_items, $nav_class='okapi-nav') {
 			else
 				echo "<a href=\"{$item['url']}\"{$title}{$external}>{$item['text']}{$external_icon}</a>";
 		}
-		echo "</ul>";
+		echo "</nav>";
 	} else {
 		echo "<nav><a href=\"#\">Faulty/No menu</a></nav>";
 	}

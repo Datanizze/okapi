@@ -15,19 +15,16 @@ class Cms_main extends Controller {
 
 	public function start(/*$stuff=null*/) {
 		$this->_load_model();
-		// everything but the content view will probably be included by the content view itself for exat positioning and all that.. we will however send all data for the page to content...
+		set_active_menu_item('home');
 		$this->load->view('start', $this->data);
-		//$this->load->view('menu');
-		//$this->load->view('content');
-		//$this->load->view('footer');
 	}
 
 	public function admin() {
 		$this->_load_model();
-		if ($this->cms->check_login()) {
-			echo '<bri>logged in, proceeding';
+		if (!$this->cms->check_login()) {
+			$this->_add_data($this->cms->get_article(), 'articles');
+			$this->load->view('cpage', $this->data);
 		} else {
-			echo '<br>not logged in, sending to login page...';
 			$this->load->view('login');
 		}
 		
@@ -36,11 +33,13 @@ class Cms_main extends Controller {
 	private function _load_model() {
 		$this->load->model('cms_model', 'cms', true);
 		// lets go ahead and load the menu here too, since all views will have that... I think...
-		$this->_add_data($this->cms->get_menu());
+
+		$this->_add_data($this->cms->get_menu(), 'menu');
+		$this->_add_data($this->cms->get_site_info(), 'site'); // things like, title, meta, extra js/css and so on...
 	}
 
-	private function _add_data($new_data) {
+	private function _add_data($new_data, $key='') {
 		if ($new_data !=null && !empty($new_data)) 
-			$this->data = array_merge((array)$this->data, (array)$new_data);
+			$this->data[$key] = $new_data;
 	}
 }

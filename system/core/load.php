@@ -55,20 +55,28 @@ class Load {
 		$this->contr->$name->load->helper('url');
 	}
 
-	public function view($view, $data=null, $extract = true) {
-		global $okapi;
+	public function view($view, $data=null, $extract = true, $load_header = true, $load_footer = true) {
+		 $okapi = Okapi::singleton();
 		// expand data if is_array
 
 		if ($data != null && $extract) {
 			extract($data);
+			unset($data);
 		}
 
 		if ($view === 'index.php') {
 			die('No access to view index.php is granted here...');
 		}
 
-		if (file_exists(APPLICATION_PATH . '/themes/' . $okapi->config['theme'] . '/'. $view . '.php')) {
-			include(APPLICATION_PATH . '/themes/' . $okapi->config['theme'] . '/' . $view) . '.php';
+		$theme = $okapi->config['theme'];
+		unset($okapi); // no automagic access to okapi from any view please :)
+		if (file_exists(APPLICATION_PATH . '/themes/' . $theme . '/'. $view . '.php')) {
+			$cwd = APPLICATION_PATH . '/themes/' . $theme;
+			if ($load_header)
+				include($cwd . '/header.php');
+			include(APPLICATION_PATH . '/themes/' . $theme . '/' . $view) . '.php';
+			if ($load_footer)
+				include($cwd . '/footer.php');
 		}
 	}
 

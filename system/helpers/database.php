@@ -42,10 +42,12 @@ class Database {
 	}
 
 	public function escape($string) {
+		if (!isset($this->conn)) 
+			$this->connect();
 		return $this->conn->real_escape_string($string);
 	}
 
-	public function freeResult($result = NULL) {
+	public function free_result($result = NULL) {
 		if ($result == NULL) {
 			$result = $this->lastQueryResult;
 		}
@@ -53,7 +55,7 @@ class Database {
 		if ($result == NULL || $this->lastQueryResult->num_rows < 1) {
 			return NULL;
 		} else {
-			$result->cloe();
+			$result->close();
 		}
 	}
 	
