@@ -81,8 +81,7 @@ class Load {
 	}
 
 	// $model; set if you want to load the helper into a model instead of the calling controller
-	public function helper($helper, $model='') {
-		$model = empty($model) ? '' : strtolower($model);
+	public function helper($helper) {
 		$path = '';
 		if (($last_slash = strrpos($helper, '/')) !== false) {
 			// get path... everything in front of the last slash
@@ -103,11 +102,7 @@ class Load {
 			$this->load_database($model);
 		} else {
 			$helperClass = ucfirst($helper);
-			if (empty($model)) {
-				$this->contr->$helper = new $helperClass;
-			} else {
-				$this->contr->$model->$helper = new $helperClass;
-			}
+			$this->contr->$helper = new $helperClass;
 		}
 	}
 

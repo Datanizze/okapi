@@ -7,18 +7,34 @@ class Cms_model extends Model {
 			include(APPLICATION_PATH . '/config/site_config.php');
 			return $site_config;
 		} 
-		
+
 	}
 
 	public function check_login() {
-		if (!isset($this->auth)) 
-			$this->load->helper('auth');
-
 		return $this->auth->is_authenticated();
 	}
 
-	public function get_menu() {
-		$res = $this->db->query("SELECT * FROM `main_menu` WHERE `alive`=1 ORDER BY `weight` DESC");
+	public function do_login() {
+		$retval = false;
+		if(isset($_POST['submit'])) {
+			if (!empty($_POST['username']) && !empty($_POST['password']))  {
+				$retval = $this->auth->authenticate($_POST['username'], $_POST['password']);
+				if (!$retval) 
+					$retval = '<p><span class="error"> Wrong Username and/or Password, try again.</span></p>';
+			}
+		}
+		return $retval;
+	}
+
+	public function do_logout() {
+		$this->auth->logout();
+		header('location: /');
+	}
+
+	public function get_menu($auth = 0) { // $auth: 0 = get menuitems for users not logged in, 1 = opposite of 0, 2 = both 0 & 1 -1 = let this method decide with help from auth helper
+		$auth = $auth<2 ? ' AND `logged_in`="' . $auth . '"' : '';
+		$query = "SELECT * FROM `main_menu` WHERE `alive`=1{$auth} ORDER BY `weight` DESC";
+		$res = $this->db->query($query);
 
 		return $this->get_array($res);
 	}

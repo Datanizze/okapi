@@ -27,7 +27,7 @@ class Auth {
 				if ($res->num_rows > 0) {
 					$row = $res->fetch_object();
 					$salt = $row->salt;
-					echo sha1($username . $salt);
+					// echo sha1($username . $salt);
 
 					if ($session_key == sha1($username . $salt)) {
 						$retval = true;
@@ -42,16 +42,45 @@ class Auth {
 
 	}
 
-	public function authenticate($user, $password) {
+	public function authenticate($username, $password) {
+		$retval = false; // always assume fail :D, makes if's easier and lesser too...
+
+		$username = $this->db->escape($username);
+		$password = $this->db->escape($password);
+		$res = $this->db->query("SELECT * FROM users WHERE `username`=\"{$username}\" LIMIT 1");
+		if($res->num_rows>0) {
+			$user = $res->fetch_assoc();
+			$pass = $this->salt($password, $user['salt']);
+			echo $pass;
+			if ($pass == $user['password']) {
+				// yay, we're logged in.. let's save som session date...
+				// TODO: maybe now when were logged in check for groups and add relevant data to _SESSION?
+				$_SESSION[BASE_PATH . '_key'] = sha1($user['username'] . $user['salt']);
+				$_SESSION[BASE_PATH . '_username'] = $user['username'];
+				$_SESSION[BASE_PATH . '_real_name'] = $user['real_name'];
+				$retval = true;
+			}
+		}
+
+		$res->close();
+		return $retval;
 
 	}
 
 	public function logout() {
+		$_SESSION[BASE_PATH . '_key'] = '';
+		$_SESSION[BASE_PATH . '_username'] = '';
+		$_SESSION[BASE_PATH . '_real_name'] = '';
 
+		unset($_SESSION[BASE_PATH . '_key']);
+		unset($_SESSION[BASE_PATH . '_username']);
+		unset($_SESSION[BASE_PATH . '_real_name']);
+
+		return true;
 	}
 
 	public function salt($password, $salt) {
-		return sha1('[okapi]-:-[' . $pass_salt . ']');
+		return sha1('[' . $password .']-:-[' . $salt . ']');
 	}
 
 	public function register($username, $password, $email, $real_name='') {

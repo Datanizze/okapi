@@ -46,8 +46,9 @@ function generate_menu($menu_items, $nav_class='okapi-nav') {
 
 }
 
-function set_active_menu_item($item) {
-	$_REQUEST['active_menu_item'] = $item;
+function set_active_menu_item($item, $force = false) {
+	if(!isset($_REQUEST['active_menu_item']) || $force)
+		$_REQUEST['active_menu_item'] = $item;
 }
 
 function get_active_menu_item() {

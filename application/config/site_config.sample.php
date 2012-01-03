@@ -5,6 +5,9 @@ $site_config = array();
 $site_config['title'] = 'Okapi CMS'; // for <title> tag in <head>
 $site_config['header'] = '<h1>Header above main menu</h1>'; // html formatted
 
+$site_config['copyright_holder'] = '';
+$site_config['copyright_notice'] = 'All rights reserved';
+
 $site_config['meta'] = array(); // for meta descriptions, tags, keywords and so on
 
 // example meta entry for <meta name="keywords" content="wikipedia,encyclopedia" >

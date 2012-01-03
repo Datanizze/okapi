@@ -28,12 +28,14 @@
 	if (isset($site) && isset($site['css'])) {
 		foreach ($site['css'] as $src) {
 			echo "<link rel=\"stylesheet\" href=\"{$src}\" type=\"text/css\" media=\"screen, projection\" />\n\t";
-	  
 		}
 	}
 	?>
 </head>
 <body>
+<?php 
+$authed = isset($authed) ? $authed : 'que?';
+echo "<div class=\"abs_top_right\">{$authed}</div>"; ?>
 <div id="okapi-wrapper"> <!-- wrapper div -->
 	<div class="span-24"> <!-- header div -->
 		<?php echo isset($site['header']) ? $site['header'] : '<h1>Header Title</h1>';?>
@@ -43,3 +45,4 @@
 			@generate_menu($menu);
 		?>
 	</div> <!-- menu div -->
+	<div id="okapi-main-content" class="span-24"> <!-- content wrapper div -->
