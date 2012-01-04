@@ -2,7 +2,9 @@ This is the new place for my MVC framework assignment
 
 INSTALL:
 cp application/config/config.sample.php application/config/config.php 
-make desired changes to config.php
+cp application/config/site_config.sample.php application/config/site_config.php 
+make desired changes to config files..
+more to come (about cms+db)
 
 WARNINGS:
 Don't forget to change RewriteBase in .htaccess if you don't want to spend some time messing around trying to fix apache whining about infinite recursions....
