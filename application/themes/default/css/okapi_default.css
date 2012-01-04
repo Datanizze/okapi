@@ -1,3 +1,9 @@
+@import url("roboto/stylesheet.css");
+
+body {
+	font-family:'RobotoRegular';
+}
+
 #okapi-wrapper {
 	width: 950px;
 	margin: 0 auto;
@@ -109,8 +115,14 @@ form.okapi-form > input[type=submit]:active {
 	box-shadow: inset 0px -1px 0px hsl(120,40%,38%);
 }
 
-p, small, h1, h2, h3, h4, h5, h6 {
-	padding: 3px;
+table.okapi-table {
+}
+
+tr.okapi-table-row {
+}
+
+th.okapi-table-cell, td.okapi-table-cell {
+
 }
 
 .abs_top_right, .abs_top_left {
