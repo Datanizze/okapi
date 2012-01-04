@@ -1,6 +1,6 @@
 <?php
 
-class Cms_main extends Controller {
+class Cms extends Controller {
 
 	public function __construct() {
 		parent::__construct();
