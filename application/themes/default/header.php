@@ -14,8 +14,10 @@
 
 	<link rel="stylesheet" href="<?php echo $tp; ?>/css/blueprint/screen.css" type="text/css" media="screen, projection" />  
 	<link rel="stylesheet" href="<?php echo $tp; ?>/css/blueprint/print.css" type="text/css" media="print" />  
-	<link rel="stylesheet" href="<?php echo $tp; ?>/css/okapi_default.css" type="text/css" media="screen, projection" />
 	<!--[if IE]><link rel="stylesheet" href="<?php echo $tp; ?>/css/blueprint/ie.css" type="text/css" media="screen, projection" /><![endif]-->
+	<link rel="stylesheet" href="<?php echo $tp; ?>/css/okapi_default.css" type="text/css" media="screen, projection" />
+
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 	<?php
 	if (isset($site) && isset($site['js'])) {
 		foreach ($site['js'] as $src) {
