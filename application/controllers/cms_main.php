@@ -26,7 +26,7 @@ class Cms_main extends Controller {
 			$this->_add_data($this->cms->get_article(), 'articles');
 			$this->load->view('cpage', $this->data);
 		} else {
-			$this->login();
+			$this->login('admin');
 		}
 
 	}
@@ -38,7 +38,7 @@ class Cms_main extends Controller {
 
 		$logged_in = $this->cms->check_login();
 		$authed = '<span class="';
-		$authed .= $logged_in ? 'success">Logged in.</span>' : 'error">NOT logged in.</span>';
+		$authed .= $logged_in ? 'success">Logged in. <a href="/logout">Logout</a></span>' : 'error">NOT logged in.</span>';
 
 		$this->_add_data($authed, 'authed');
 		$this->_add_data($this->cms->get_menu($logged_in ? 2 : 0), 'menu');
@@ -50,11 +50,12 @@ class Cms_main extends Controller {
 			$this->data[$key] = $new_data;
 	}
 
-	public function login() {
+	public function login($forward_to='/') {
 		set_active_menu_item('login');
+		$this->_add_data("/{$forward_to}", 'forward_to');
 		$this->_add_data($this->cms->do_login(), 'login_status');
 		if (isset($this->data['login_status']) && $this->data['login_status']==1) 
-			header('location: /');
+			header('location: /' . $forward_to);
 		else
 			$this->load->view('login', $this->data);
 	}

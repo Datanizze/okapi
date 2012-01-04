@@ -40,7 +40,7 @@ class Cms_model extends Model {
 	}
 
 	public function get_article($article_id = null) {
-		$query = "SELECT * FROM article";
+		$query = "SELECT `key`,`title`,`content`,`content_type`,`active`,`created`,`published`,`modified`,`author` FROM article";
 
 		if ($article_id != NULL) {
 			if (is_numeric(trim($article_id))) {// get article by id
