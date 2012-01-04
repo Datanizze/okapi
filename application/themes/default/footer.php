@@ -1,5 +1,4 @@
-</div> <!-- content wrapper div -->
-</div> <!-- content span-24 div -->
+</div> <!-- content span-24 wrapper div -->
 <footer class="okapi-footer span-24">
 <p>This is the footer, you might want to put som contact information here... Or something else.. I don't know</p>
 

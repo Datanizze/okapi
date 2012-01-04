@@ -45,5 +45,4 @@ echo "<div class=\"abs_top_right\">{$authed}</div>"; ?>
 			@generate_menu($menu);
 		?>
 	</div> <!-- menu div -->
-	<div id="okapi-main-content" class="container"> <!-- content wrapper div -->
-	<div class="span-24"> <!-- content span-24 div -->
+	<div id="okapi-main-content" class="span-24"> <!-- content span-24 wrapper div -->
