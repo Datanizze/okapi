@@ -3,8 +3,8 @@
 function path_to($name) {
 	$okapi = Okapi::singleton();
 	$paths = array();
-	$paths['theme'] = 'application/themes/' . $okapi->config['theme'];
-	$paths['core'] = 'system/core';
+	$paths['theme'] = '/application/themes/' . $okapi->config['theme'];
+	$paths['core'] = '/system/core';
 	switch ($name) {
 	case 'theme':
 	case 'core':
