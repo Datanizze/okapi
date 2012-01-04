@@ -12,3 +12,11 @@ echo !empty($site['copyright_notice']) ? $site['copyright_notice'] : 'Copyright 
 </small>
 </footer>
 </div> <!-- wrapper div -->
+
+<script>
+$(function() {
+	$('*[rel=tipsy]').tipsy({gravity: 's'});
+});
+</script>
+</body>
+</html>

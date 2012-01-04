@@ -40,7 +40,7 @@ body {
 
 .okapi-nav a:hover, .okapi-nav > a.active {
 	color: #000;
-	padding: 4px 8px;
+	padding: 1px 8px;
 	text-shadow: -1px -1px 0 rgba(552, 255, 255, 1);
 
 	background: #E0E0E0;
@@ -68,10 +68,10 @@ body {
 	padding: 5px 0;
 	border-top: 1px solid rgba(200,200,200,1);
 	background:#222;
-	background: -moz-linear-gradient(top, rgba(240,240,240,1) 0%, rgba(180,180,180,1) 100%); /* FF3.6+ */
+	background: -moz-linear-gradient(top, rgba(230,230,230,0.3) 0%, rgba(200,200,200,0.3) 100%); /* FF3.6+ */
 	background: -webkit-linear-gradient(top, rgba(230,230,230,0.3) 0%, rgba(200,200,200,0.3) 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top, rgba(240,240,240,1) 0%, rgba(180,180,180,1) 100%); /* Opera 11.10+ */
-	background: linear-gradient(top, rgba(240,240,240,1) 0%, rgba(180,180,180,1) 100%); /* W3C */
+	background: -o-linear-gradient(top, rgba(230,230,230,0.3) 0%, rgba(200,200,200,0.3) 100%); /* Chrome10+,Safari5.1+ */
+	background: linear-gradient(top, rgba(230,230,230,0.3) 0%, rgba(200,200,200,0.3) 100%); /* Chrome10+,Safari5.1+ */
 }
 
 form.okapi-form {
@@ -86,6 +86,9 @@ form.okapi-form > input[type=text]:focus, form.okapi-form > input[type=password]
 form.okapi-form > input[type=submit] {
 	background: hsl(0,0%, 93%);
 	background: -webkit-linear-gradient(top, hsl(0,0%,93%) 0%, hsl(0,0%,91%) 100%);
+	background: -moz-linear-gradient(top, hsl(0,0%,93%) 0%, hsl(0,0%,91%) 100%);
+	background: -o-linear-gradient(top, hsl(0,0%,93%) 0%, hsl(0,0%,91%) 100%);
+	background: linear-gradient(top, hsl(0,0%,93%) 0%, hsl(0,0%,91%) 100%);
 	border-radius: 4px;
 	border: 1px solid;
 	border-color: hsl(0,0%,40%) hsl(0,0%,50%) hsl(0,0%,60%);
@@ -102,6 +105,9 @@ form.okapi-form > input[type=submit] {
 form.okapi-form > input[type=submit]:hover {
 	background: hsl(120,80%, 50%);
 	background: -webkit-linear-gradient(top, hsl(120,70%,45%) 0%, hsl(120,60%,43%) 100%);
+	background: -moz-linear-gradient(top, hsl(120,70%,45%) 0%, hsl(120,60%,43%) 100%);
+	background: -o-linear-gradient(top, hsl(120,70%,45%) 0%, hsl(120,60%,43%) 100%);
+	background: linear-gradient(top, hsl(120,70%,45%) 0%, hsl(120,60%,43%) 100%);
 	border-color: hsl(120,30%,40%) hsl(120,50%,40%);
 
 	box-shadow: inset 0px 1px 0px hsl(120,80%,58%), 0px 0px 1px hsl(120,60%, 60%);
