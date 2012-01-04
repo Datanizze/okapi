@@ -13,7 +13,7 @@
 			Content
 		</th>
 		<th class="okapi-table-cell">
-			Content Type
+			C. Type
 		</th>
 		<th class="okapi-table-cell">
 			Active
@@ -22,22 +22,34 @@
 			Created
 		</th>
 		<th class="okapi-table-cell">
-			Published
-		</th>
-		<th class="okapi-table-cell">
-			Modified
-		</th>
-		<th class="okapi-table-cell">
 			Author
 		</th>
 	</tr>
 	<?php foreach($articles as $article) { ?>
 		<tr class="okapi-table-row">
-			<?php foreach($article as $key => $val) { ?>
 			<td class="okapi-table-cell">
-				<?php echo $val; ?>
+				<a href="#" title="View article"><?php echo $article['key']; ?></a>
 			</td>
-			<?php } ?>
+			<td class="okapi-table-cell">
+				<?php echo $article['title']; ?>
+			</td>
+			<td class="okapi-table-cell">
+				<?php echo strlen($article['content']) >60 ? substr($article['content'],0,57) . '<a href="#">...</a>' : $article['content']; ?>
+			</td>
+			<td class="okapi-table-cell">
+				<?php echo $article['content_type']; ?>
+			</td>
+			<td class="okapi-table-cell">
+				<?php echo $article['active']; ?>
+				<a href="#"><img src="<?php echo $tp; ?>/img/icons/dot-red.png" title="Activate article"/></a>
+				<a href="#"><img src="<?php echo $tp; ?>/img/icons/dot-green.png" title="Deactivate article"/></a>
+			</td>
+			<td class="okapi-table-cell">
+				<?php echo $article['created']; ?>
+			</td>
+			<td class="okapi-table-cell">
+				<?php echo $article['author']; ?>
+			</td>
 			<td class="okapi-table-cell"><a href="#"><img src="<?php echo $tp; ?>/img/icons/document--pencil.png" title="Edit article"/></a></td>
 			<td class="okapi-table-cell"><a href="#"><img src="<?php echo $tp; ?>/img/icons/minus-button.png" title="Remove article"/></a></td>
 		</tr>
