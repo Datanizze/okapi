@@ -7,7 +7,7 @@ This is the new place for my MVC framework assignment
 $ cp application/config/config.sample.php application/config/config.php 
 $ cp application/config/site_config.sample.php application/config/site_config.php 
 </pre>
-2. Change configs to your liking, the important stuff here is valid connection settings to your database if you want the CMS part to work
+2. Change configs to your liking, the important stuff here is valid connection settings for your database, okapi _MUST_ have valid database settings or it _WILL NOT_ work! (I know.. kind of bad... should be optional but I don't have time for that right now!) 
 3. Navigate to http://yourdomain/path/to/okapi/install_db/ (Of course you need to change yourdomain and path/to/okapi to whatever matches your prerequisites.
 4. If you don't encounter any problems and if the above navigation leads to the pages telling you it was successful you're all set to go! (the url to the CMS part is http://yourdomain/path/to/okapi/cms/. If you want the CMS part to be your default you could just change the default_controller setting in your config.php file to be cms instead of welcome (which is the default controller after install).
 

@@ -10,6 +10,7 @@ class Cms extends Controller {
 	// this array keeps track of everything that should go into the view(s)
 	// thus we will incrementally add to this variable when we have more data to add
 	private $data = array();
+	private $logged_in = null;
 
 	public function index() {
 		$this->start();
@@ -22,7 +23,7 @@ class Cms extends Controller {
 
 	public function admin() {
 		set_active_menu_item('admin');
-		if ($this->cms->check_login()) {
+		if ($this->logged_in) {
 			$this->_add_data($this->cms->get_article(), 'articles');
 			$this->load->view('cpage', $this->data);
 		} else {
@@ -36,12 +37,14 @@ class Cms extends Controller {
 		$this->cms->load->helper('auth');
 		// lets go ahead and load the menu here too, since all views will have that... I think...
 
-		$logged_in = $this->cms->check_login();
+		if($this->logged_in == null)
+			$this->logged_in = $this->cms->check_login();
+
 		$authed = '<span class="';
-		$authed .= $logged_in ? 'success">Logged in. <a href="/logout">Logout</a></span>' : 'error">NOT logged in.</span>';
+		$authed .= $this->logged_in ? 'success">Logged in. <a href="/logout">Logout</a></span>' : 'error">NOT logged in.</span>';
 
 		$this->_add_data($authed, 'authed');
-		$this->_add_data($this->cms->get_menu($logged_in ? 2 : 0), 'menu');
+		$this->_add_data($this->cms->get_menu($this->logged_in ? 2 : 0), 'menu');
 		$this->_add_data($this->cms->get_site_info(), 'site'); // things like, title, meta, extra js/css and so on...
 	}
 
@@ -50,18 +53,30 @@ class Cms extends Controller {
 			$this->data[$key] = $new_data;
 	}
 
-	public function login($forward_to='/') {
+	public function login($forward_to='') {
 		set_active_menu_item('login');
-		$this->_add_data("/{$forward_to}", 'forward_to');
-		$this->_add_data($this->cms->do_login(), 'login_status');
-		if (isset($this->data['login_status']) && $this->data['login_status']==1) 
-			header('location: /' . $forward_to);
-		else
-			$this->load->view('login', $this->data);
-	}
+		if(!empty($_POST['forward_to']))
+			$forward_to = $_POST['forward_to'];
 
+		$this->_add_data($forward_to, 'forward_to');
+		$this->_add_data($this->cms->do_login(), 'login_status');
+		if (isset($this->data['login_status']) && is_bool($this->data['login_status']) && $this->data['login_status']==true) {
+			if (!empty($forward_to)) {
+				header('location: ' ./* $_SERVER['SERVER_NAME']. '/' .*/ $forward_to);
+			} else {
+				header('location: /');
+			}
+		} else {
+			$this->load->view('login', $this->data);
+		}
+	}
 
 	public function logout() {
 		$this->cms->do_logout();
+	}
+
+	public function install() {
+		echo 'Installing CMS database tables';
+		$install = $this->cms->do_install($this->logged_in);
 	}
 }

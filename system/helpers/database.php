@@ -14,6 +14,7 @@ class Database {
 	
 	public function connect($host='', $user='', $pass='', $database='', $prefix='') {
 		
+		$retval = false;
 		if ($host=='' || $host=='' || $host=='' || $host=='' || $prefix=='') {
 			global $okapi;
 			$host = empty($host) ? $okapi->config['db']['host'] : $host;
@@ -30,21 +31,30 @@ class Database {
 		
 		if ($this->conn->connect_error) {
 			$this->fuu('Connect Error (' . mysqli_connect_errno() . ') ' . mysqli_connect_error());
+			$retval = false;
+		} else {
+			$retval = true;
 		}
+
+		return $retval;
 	}
 	
 	public function query($query, $dbg = false) {
 		if (!isset($this->conn)) 
 			$this->connect();
+
 		$this->nrOfExecutedQueries++;
 		$this->lastQueryResult = $this->conn->query($query);
+		if($this->conn->affected_rows == -1) { // error
+			return $this->conn->error;
+		}
 		return $this->lastQueryResult;
 	}
 
 	public function escape($string) {
 		if (!isset($this->conn)) 
 			$this->connect();
-		return $this->conn->real_escape_string($string);
+		return @$this->conn->real_escape_string($string);
 	}
 
 	public function free_result($result = NULL) {
@@ -69,13 +79,13 @@ class Database {
 		switch($lvl) {
 		case 0:
 			if ($dbg)
-				echo $msg;
+				return $msg;
 			break;
 		case 1:
 			break;
 		case 2:
 		default:
-			die($msg); // only die for now, maybe add some fancy html output later...
+			return $msg; // only die for now, maybe add some fancy html output later...
 			break;
 		}
 	}

@@ -134,6 +134,10 @@ tr.okapi-table-row:hover {
 
 }
 
+tr.okapi-table-row p {
+	margin: 0;
+}
+
 th.okapi-table-cell, td.okapi-table-cell {
 
 }

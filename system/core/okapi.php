@@ -157,10 +157,16 @@ class Okapi {
 
 	private function get_canonical($can) {
 		require_once(BASE_PATH . '/system/helpers/database.php');
+		$retval = '';
 		$db = new Database();
 		$db->connect();
 		$can = $db->escape($can);
-		return $db->query("SELECT * FROM canonical_urls WHERE canurl = '{$can}' AND active='1' ORDER BY created DESC LIMIT 1")->fetch_object();
+
+		$res = $db->query("SELECT * FROM {$this->config['db']['prefix']}canonical_urls WHERE canurl = '{$can}' AND active='1' ORDER BY created DESC LIMIT 1");
+		if (is_object($res))
+			$retval = $res->fetch_object();
+
+		return $retval;
 
 	}
 

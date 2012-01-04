@@ -10,4 +10,8 @@ class Welcome extends Controller {
 			echo 'This is the welcome controller speaking';
 	}
 
+	public function install_db() {
+		header('location: /cms/install');
+	}
+
 }
