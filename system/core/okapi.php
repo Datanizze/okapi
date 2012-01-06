@@ -55,7 +55,7 @@ class Okapi {
 						header('location: ' . $can_url->realurl);
 					} else {
 						// internal link.. just call the dispatch method again with realurl as parameter
-						$this->dispatch($can_url->realurl);
+						$this->dispatch("{$can_url->realurl}/{$action}/{$parameters}");
 					}
 				} else {
 					// no controller, no canurl... send everything to the default controller, let the def controller take care of this load now...
