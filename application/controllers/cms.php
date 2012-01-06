@@ -4,7 +4,6 @@ class Cms extends Controller {
 
 	public function __construct() {
 		parent::__construct();
-		$this->load->helper('auth', 'cms');
 		$this->_load_model();
 	}
 	// this array keeps track of everything that should go into the view(s)
@@ -21,8 +20,16 @@ class Cms extends Controller {
 		$this->load->view('start', $this->data);
 	}
 
-	public function admin() {
+	public function admin($params = null) {
 		set_active_menu_item('admin');
+		if (isset($params)) {
+			$this->load->helper('url');
+			echo '<pre>';
+			$params = $this->url->p2a($params);
+			print_r($params);
+			echo '</pre>';
+		}
+
 		if ($this->logged_in) {
 			$this->_add_data($this->cms->get_article(), 'articles');
 			$this->load->view('cpage', $this->data);
@@ -78,5 +85,16 @@ class Cms extends Controller {
 	public function install() {
 		echo 'Installing CMS database tables';
 		$install = $this->cms->do_install($this->logged_in);
+	}
+
+	public function __call($action, $params) {
+		$this->four_o_four($action, $params);
+	}
+
+	public function four_o_four($action, $params) {
+		header("HTTP/1.0 404 Not Found");
+		$this->_add_data($action);
+		$this->_add_data($params);
+		$this->load->view('404', $this->data);
 	}
 }
