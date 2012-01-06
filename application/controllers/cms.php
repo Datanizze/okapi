@@ -24,10 +24,8 @@ class Cms extends Controller {
 		set_active_menu_item('admin');
 		if (isset($params)) {
 			$this->load->helper('url');
-			echo '<pre>';
 			$params = $this->url->p2a($params);
-			print_r($params);
-			echo '</pre>';
+			set_active_menu_item($params[0], 'active_submenu_item');
 		}
 
 		if ($this->logged_in) {
