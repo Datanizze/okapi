@@ -1,4 +1,7 @@
 <?php $action = isset($action) ? $action : 'show_all'; ?>
+
+<div class="span-24">
+<?php include('cpage_menu.php');?>
 <h2>
 cPage - 
 <?php 
@@ -6,8 +9,7 @@ echo ucfirst(str_replace('_', ' ' , strtolower($action)));
 echo !empty($action_item) ? ' article <strong>' . $action_item . '</strong>' : '';
 ?>
 </h2>
-<?php
-switch ($action) {
+<?php switch ($action) {
 case 'edit':
 	include('cpage_edit.php');
 	break;
@@ -24,4 +26,5 @@ case 'show_all':
 default:
 	include('cpage_all.php');
 	break;
-}
+} ?>
+</div>

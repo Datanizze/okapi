@@ -27,7 +27,7 @@ body {
 	border-style: solid;
 	border-width: 1px 0;
 	border-color: #1a1a1a #1a1a1a #000000;
-	box-shadow: inset 0px 1px 1px rgba(255,255,255,0.2);
+	box-shadow: inset 0px 1px 0px rgba(255,255,255,0.2);
 	text-shadow: -1px -1px 0 rgba(0, 0, 0, 1);
 }
 
@@ -58,10 +58,6 @@ body {
 
 .okapi-nav a > img {
 	width: 12px;
-}
-
-#okapi-main-content {
-	padding: 10px 2px;
 }
 
 .okapi-footer {
@@ -140,6 +136,55 @@ tr.okapi-table-row p {
 
 th.okapi-table-cell, td.okapi-table-cell {
 
+}
+
+.okapi-border-right {
+	padding-right: 4px;
+	margin-right: 5px;
+	border-right: 1px solid hsl(0,0%,85%);
+}
+
+.okapi-subnav {
+	font-family: sans-serif;
+	display: block;
+	background: hsl(0, 0%, 98%);
+	background: -webkit-linear-gradient(top, hsl(280, 0%, 98%) 0%, hsl(280, 0%, 92%) 100%);
+	margin: 0 4px;
+	border-radius: 0 0 4px 4px;
+	padding: 4px 15px;
+	border-style: solid;
+	border-width: 0px 1px 1px;
+	border-color: black hsl(280, 0%, 38%) hsl(280, 0%, 30%);
+	box-shadow: inset 0px -1px 0px hsl(280,0%,87%), inset 0px 1px 2px hsl(0,0%,55%);
+}
+
+.okapi-subnav a {
+	border: 1px solid transparent;
+	font-weight: bold;
+	text-decoration: none;
+	padding: 3px 6px;
+	margin: 0 2px;
+	font-size: 11px;
+	color: hsl(0, 0%, 30%);
+	text-shadow: -1px -1px 0px hsl(0, 0%, 100%);
+}
+
+.okapi-subnav a:hover, .okapi-subnav .active {
+	border: 1px solid hsl(0, 0%, 45%);
+	border-radius: 3px;
+	color: hsl(0, 0%, 99%);
+	background: hsl(0, 0%, 20%);
+	background: -webkit-linear-gradient(top, hsl(0, 0%, 30%) 0%, hsl(0, 0%, 10%) 100%);
+	box-shadow: inset 0px 1px 0px hsl(0,0%,50%);
+	text-shadow: -1px -1px 0px hsl(0, 0%, 0%);
+}
+
+.okapi-subnav-title {
+	border-right: 1px solid hsl(0, 0%, 61%);
+	padding-right: 10px;
+	margin-right: 5px;
+	font-size: 13px;
+	font-weight: bold;
 }
 
 .abs_top_right, .abs_top_left {

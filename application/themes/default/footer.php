@@ -17,6 +17,7 @@ echo !empty($site['copyright_notice']) ? $site['copyright_notice'] : 'Copyright 
 $(function() {
 	$('*[rel=tipsy]').tipsy({gravity: 's'});
 	$('.okapi-nav a').tipsy({gravity: 's'});
+	$('.okapi-subnav a').tipsy({gravity: 'n'});
 });
 </script>
 </body>
