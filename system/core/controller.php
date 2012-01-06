@@ -15,7 +15,7 @@ class Controller {
 		echo 'This is the index method in the core controller class, you really should override this!';
 	}
 
-	// magic overloading for showing 404's when accessing methods that does not exist...
+	// magic overloading for showing 404's when accessing stuff that does not exist...
 	public function __call($name, $arguments) {
 		die("404, <strong>{$name}</strong> not found... Walk away... Just walk away before something really bad happens...");
 	}
