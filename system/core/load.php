@@ -56,7 +56,7 @@ class Load {
 	}
 
 	public function view($view, $data=null, $extract = true, $load_header = true, $load_footer = true) {
-		 $okapi = Okapi::singleton();
+		$okapi = Okapi::singleton();
 		// expand data if is_array
 
 		if ($data != null && $extract) {
@@ -92,17 +92,22 @@ class Load {
 
 		$helper = strtolower($helper);
 
-		if (file_exists(BASE_PATH . '/system/helpers/' . $path . $helper . '.php')) {
-			include_once(BASE_PATH . '/system/helpers/' . $path . $helper . '.php');
+		if (isset($this->contr->$helper)) {
+			echo 'helper ' . $helper . 'already loaded in ' . get_class($this->contr);
 		} else {
-			die("could not find any helper with the name '$helper'");
-		}
 
-		if ($helper == 'database') {
-			$this->load_database($model);
-		} else {
-			$helperClass = ucfirst($helper);
-			$this->contr->$helper = new $helperClass;
+			if (file_exists(BASE_PATH . '/system/helpers/' . $path . $helper . '.php')) {
+				include_once(BASE_PATH . '/system/helpers/' . $path . $helper . '.php');
+			} else {
+				die("could not find any helper with the name '$helper'");
+			}
+
+			if ($helper == 'database') {
+				$this->load_database($model);
+			} else {
+				$helperClass = ucfirst($helper);
+				$this->contr->$helper = new $helperClass;
+			}
 		}
 	}
 
