@@ -170,11 +170,14 @@ th.okapi-table-cell, td.okapi-table-cell {
 }
 
 .okapi-subnav a:hover, .okapi-subnav .active {
-	border: 1px solid hsl(0, 0%, 45%);
+	border: 1px solid hsl(0, 0%, 15%);
 	border-radius: 3px;
 	color: hsl(0, 0%, 99%);
 	background: hsl(0, 0%, 20%);
 	background: -webkit-linear-gradient(top, hsl(0, 0%, 30%) 0%, hsl(0, 0%, 10%) 100%);
+	background: -moz-linear-gradient(top, hsl(0, 0%, 30%) 0%, hsl(0, 0%, 10%) 100%);
+	background: -o-linear-gradient(top, hsl(0, 0%, 30%) 0%, hsl(0, 0%, 10%) 100%);
+	background: linear-gradient(top, hsl(0, 0%, 30%) 0%, hsl(0, 0%, 10%) 100%);
 	box-shadow: inset 0px 1px 0px hsl(0,0%,50%);
 	text-shadow: -1px -1px 0px hsl(0, 0%, 0%);
 }
@@ -198,4 +201,8 @@ th.okapi-table-cell, td.okapi-table-cell {
 
 .abs_top_left {
 	left: 10px;
+}
+
+h2 {
+	padding-top: 0.5em;
 }
