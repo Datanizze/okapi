@@ -57,3 +57,13 @@ function get_active_menu_item($key='active_menu_item') {
 		$retval = $_REQUEST[$key];
 	return $retval;
 }
+
+/**
+ * Sanitizing text to be able to display it in a html-page.
+ * Stolen from @mosbth medes :)
+ * @param string text The text to be sanitized.
+ * @returns string The sanitized html.
+ */
+function sanitize_html($text) {	
+		return htmlspecialchars($text, ENT_NOQUOTES, 'UTF-8', false);
+}
