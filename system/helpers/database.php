@@ -52,9 +52,20 @@ class Database {
 	}
 
 	public function escape($string) {
+		$ret = '';
 		if (!isset($this->conn)) 
 			$this->connect();
-		return @$this->conn->real_escape_string($string);
+		if (is_array($string)) {
+			$ret = array();
+			foreach($string as $key => $val) {
+				$key = $this->conn->real_escape_string($key);
+				$val = $this->conn->real_escape_string($val);
+				$ret[$key] = $val;
+			}
+		} else {
+			$ret = $this->conn->real_escape_string($string);
+		}
+		return $ret;
 	}
 
 	public function free_result($result = NULL) {

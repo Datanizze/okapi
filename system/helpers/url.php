@@ -25,7 +25,7 @@ class url {
 		return $return;
 	}
 	
-	// parameter strint to simple array
+	// parameter string to simple array
 	public function p2a($paramstring, $sep = '/', $limit = null) {
 		// action/param1/33/param2/453/param3/tjohejsan
 		$ret = null;
