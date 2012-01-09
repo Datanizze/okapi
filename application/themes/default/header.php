@@ -16,9 +16,13 @@
 	<link rel="stylesheet" href="<?php echo $tp; ?>/css/blueprint/print.css" type="text/css" media="print" />  
 	<!--[if IE]><link rel="stylesheet" href="<?php echo $tp; ?>/css/blueprint/ie.css" type="text/css" media="screen, projection" /><![endif]-->
 	<link rel="stylesheet" href="<?php echo $tp; ?>/css/tipsy.css" type="text/css" media="screen, projection" />
+	<link rel="stylesheet" href="<?php echo $tp; ?>/css/jqueryui/smoothness/jquery-ui-1.8.16.custom.css" type="text/css" media="screen" charset="utf-8">
+	<link rel="stylesheet" href="<?php echo $tp; ?>/css/elrte.min.css" type="text/css" media="screen" charset="utf-8">
 	<link rel="stylesheet" href="<?php echo $tp; ?>/css/okapi_default.css" type="text/css" media="screen, projection" />
 
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+	<script src="<?php echo $tp; ?>/js/elrte.min.js" ></script>
 	<script src="<?php echo $tp; ?>/js/jquery.tipsy.js"></script>
 	<?php
 	if (isset($site) && isset($site['js'])) {
@@ -47,7 +51,7 @@ echo "<div class=\"abs_top_right\">{$authed}</div>"; ?>
 	</div> <!-- header div -->
 	<div class="span-24 okapi-menu-wrapper"><!-- menu div -->
 		<?php 
-			@generate_menu($menu);
+			generate_menu($menu);
 		?>
 	</div> <!-- menu div -->
 	<div id="okapi-main-content" class="span-24"> <!-- content span-24 wrapper div -->
