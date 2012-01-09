@@ -96,11 +96,11 @@ class Okapi {
 			// try and fetch the default controller from config
 			// if that fails, fall back th the welcome-controller in the core files.
 			if (isset($this->config['default_controller']) && class_exists($this->config['default_controller'])) {
-				$this->Controller = new $this->config['default_controller'];
-				$this->Controller->index();
+				$this->controller = new $this->config['default_controller'];
+				$this->controller->index();
 			} else {
-				$this->Controller = new Welcome();
-				$this->Controller->index('No specified valid controller found so the welcome controller took over...');
+				$this->controller = new Welcome();
+				$this->controller->index('No specified valid controller found so the welcome controller took over...');
 			}
 		}
 	}
