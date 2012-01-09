@@ -9,7 +9,7 @@ $config['base_url'] = 'http://example.com/okapi/';
 $config['default_controller'] = 'welcome';
 
 // Theme to use... a.k.a the folder name in themes folder for the theme stuffs...
-$config['theme'] = 'defualt';
+$config['theme'] = 'default';
 
 // database settings
 $config['db']['prefix'] = 'okapi_';
