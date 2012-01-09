@@ -1,6 +1,6 @@
 </div> <!-- content span-24 wrapper div -->
 <footer class="okapi-footer span-24">
-<p>This is the footer, you might want to put som contact information here... Or something else.. I don't know</p>
+<p>This is the footer, you might want to put som contact information here... Or something else... I don't know</p>
 
 <small class="quiet">&copy; Copyright 
 <?php echo date('Y'); ?> 
@@ -15,9 +15,16 @@ echo !empty($site['copyright_notice']) ? $site['copyright_notice'] : 'Copyright 
 
 <script>
 $(function() {
-	$('*[rel=tipsy]').tipsy({gravity: 's'});
+	$('img[rel=tipsy]').tipsy({gravity: 's'});
+	$('a[rel=tipsy]').tipsy({gravity: 's'});
+	$('label[rel=tipsy]').tipsy({gravity: 'w'});
 	$('.okapi-nav a').tipsy({gravity: 's'});
-	$('.okapi-subnav a').tipsy({gravity: 'n'});
+	$('.okapi-subnav a').tipsy({gravity: 'nw'});
+	$('.okapi-form input[rel=tipsy]').tipsy({html: true, trigger: 'focus', gravity: 'w'});
+	$('.okapi-form input[type=checkbox]').tipsy({html: true, gravity: 'w'});
+	$('.okapi-form select[rel=tipsy]').tipsy({html: true, gravity: 'w'});
+
+	/*$('textarea[rel=elrte]').elrte({toolbar: 'maxi'});*/
 });
 </script>
 </body>
