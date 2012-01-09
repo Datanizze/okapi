@@ -52,36 +52,159 @@ class Cms_model extends Model {
 		return $this->get_array($res);
 	}
 
-	public function get_article($article_id = null) {
-		$query = "SELECT * FROM {$this->prefix}articles";
+	public function get_canurl($can_id = null) {
+		$query = "SELECT * FROM {$this->prefix}canonical_urls";
 
-		if ($article_id != NULL) {
-			if (is_numeric(trim($article_id))) {// get article by id
-				$query .= " WHERE `id`='{$article_id}' LIMIT 1";
+		if ($article_id != NULL) 
+			if (is_numeric(trim($article_id))) // get article by id
+				$query .= " WHERE `id`='{$can_id}' LIMIT 1";
+
+	}
+
+	public function get_main_menu($menu_item_id = null) {
+		$query = "SELECT * FROM {$this->prefix}main_menu";
+
+		if ($article_id != NULL)
+			if (is_numeric(trim($article_id))) // get article by id
+				$query .= " WHERE `id`='{$menu_item_id}' LIMIT 1";
+
+	}
+
+	public function get_article($article_id = null) {
+		return $this->get('articles', $article_id);
+	}
+
+	public function get($table, $key=null, $get_deactivated = true) {
+		$query = "SELECT * FROM {$this->prefix}{$table}";
+		$deactivated = $get_deactivated ? '' : (isset($key) ? " AND `active`='1'" : " WHERE `active`='1'") ;
+
+		if ($key != NULL) {
+			if (is_numeric(trim($key))) { // get article by id
+				$query .= " WHERE `id`='{$key}' {$deactivated} LIMIT 1";
 			} else { // get article by key
-				$key = $this->db->escape($article_id);
-				$query .= " WHERE `key`='{$key}' LIMIT 1";
+				$key = $this->db->escape($key);
+				$query .= " WHERE `key`='{$key}' {$deactivated} LIMIT 1";
 			}
 		}
+
 		$res = $this->db->query($query);
-		return $this->get_array($res);
+		$rows = $this->get_array($res);
+		return $rows;
+	}
+
+	public function save($table, $data) {
+		$retval = null;
+		// escape user data
+		$data = $this->db->escape($data);
+
+		// check if key is set, if not use urlencoded title...
+		$data['key'] = !empty($data['key']) ? $data['key'] : str_replace(' ' , '-', (strtolower($data['title'])));
+		// first check if it's a new item or editing existing one.
+		$res = $this->db->query("SELECT * FROM `{$this->prefix}{$table}` WHERE `key`='{$data['key']}' LIMIT 1");
+		if (is_object($res)) {
+			$query = '';
+			// let's fix $data['active'] since it is not 0 or 1 but instead on or not set at all! 
+			$data['active'] = isset($data['active']) ? (is_numeric($data['active']) ? $data['active'] : 1) : 0;
+
+			if($res->num_rows == 1) { // item exists, therefore we should do an update, not insert
+				$query = "UPDATE `{$this->prefix}{$table}` SET ";
+
+				// lets build the col_name=expr...
+				foreach ($data as $key => $val) {
+					$query .= "`{$key}`='{$val}', ";
+				}
+				// remove trailing ', '
+				$query = substr($query, 0, -2) . ' ';
+
+				// add WHERE
+				$query .= "WHERE `key`='{$data['key']}'";
+
+				// run query
+				$res = $this->db->query($query);
+				if ($res === true) { // TODO: think about how mysql works... insert on dupl_key could be update... oh well, let' do it manually for now.
+					@$retval = array('status' => 'success', 'message' => "<strong><a href=\"/page/{$data['key']}\">{$data['title']}</a></strong> was successfully saved!");
+				} else {
+					$retval = array('status' => 'error', 'message' => "Could not save <strong>{$data['key']}</strong>: {$res}");
+				}
+			} elseif ($res->num_rows == 0) { // new item
+				$query =  "INSERT INTO `{$this->prefix}{$table}` ";
+				// Let's build the column,values
+				$cols = '(';
+				$vals = '(';
+				foreach($data as $key => $val) {
+					$cols .= "`$key`, ";
+					$vals .= "'$val', ";
+				}
+				// trim leading ', ' and add finishing ')'
+				$cols = substr($cols, 0, -2) . ')';
+				$vals = substr($vals, 0, -2) . ')';
+
+				// add cols & vals to query and finish it.
+				$query .= $cols . ' VALUES ' . $vals;
+
+				// let's run the query!
+				$res = $this->db->query($query);
+				if ($res === true) { // TODO: think about how mysql works... insert on dupl_key could be update... oh well, let' do it manually for now.
+					@$retval = array('status' => 'success', 'message' => "<em>New</em> <strong><a href=\"/page/{$data['key']}\">{$data['title']}</a></strong> was successfully added!");
+				} else {
+					$retval = array('status' => 'error', 'message' => "Could not add <strong>{$data['key']}</strong>: <br> {$res}");
+				}
+			}
+		} else {
+			$retval = array('status' => 'error', 'message' => "Save failed:<br> {$res}");
+		}
+		return $retval;
+	}
+
+	public function delete($table, $key) {
+		$retval = null;
+		$key = $this->db->escape($key); // escape key
+		// build query
+		$query = "DELETE FROM `{$this->prefix}{$table}` WHERE `key`='{$key}'";
+
+		// run query
+		$res = $this->db->query($query);
+
+		if($res === true) {
+			// delete success
+			$retval = array('status' => 'success', 'message' => "<strong>{$key}</strong> was successfully deleted!");
+		} else {
+			$retval = array('status' => 'error', 'message' => "Could not delete <strong>{$key}</strong>: <br> {$res}");
+		}
+
+		return $retval;
+	}
+
+	public function deactivate($table, $key) {
+		$this->activate($table, $key, true);
+	}
+
+	public function activate($table, $key, $deactivate = false) {
+		$data = array();
+		$data['key'] = $key;
+		if ($deactivate)
+			$data['active'] = 0;
+		else 
+			$data['active'] = 1;
+
+		return $this->save($table, $data);
 	}
 
 	public function do_install($authed = false) {
 		$installation_exists = false;
 		$tables_ddl = array();
 		$tables_ddl['articles'] = "CREATE TABLE `{$this->prefix}articles` (
-					`id` int(11) not null auto_increment,
-					`key` varchar(255) not null,
-					`type` varchar(255) default 'article',
-					`title` varchar(255) default 'Title',
-					`content` text,
-					`content_type` varchar(255) default 'html',
-					`active` int(1) default '1',
-					`created` timestamp not null default CURRENT_TIMESTAMP,
-					`published` timestamp not null default '0000-00-00 00:00:00',
-					`modified` timestamp not null default '0000-00-00 00:00:00',
-					`author` int(11),
+			`id` int(11) not null auto_increment,
+			`key` varchar(255) not null,
+			`type` varchar(255) default 'article',
+			`title` varchar(255) default 'Title',
+			`content` text,
+			`content_type` varchar(255) default 'html',
+			`active` int(1) default '1',
+			`created` timestamp not null default CURRENT_TIMESTAMP,
+			`published` timestamp not null default '0000-00-00 00:00:00',
+			`modified` timestamp not null default '0000-00-00 00:00:00',
+			`author` int(11),
 				PRIMARY KEY (`id`),
 				UNIQUE KEY (`key`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;";
@@ -196,14 +319,17 @@ class Cms_model extends Model {
 	}
 
 	private function get_array($sql_result, $free_result_when_done = true) {
-		$ret = array();
+		$ret = null;
 		if (is_object($sql_result) && $sql_result->num_rows > 0) {
-			while ($row = $sql_result->fetch_assoc())
+			$ret = array();
+			while ($row = $sql_result->fetch_assoc()) {
 				array_push($ret, $row);
+			}
 		} 
 		if($free_result_when_done)
 			$this->db->free_result();
 
 		return $ret;
 	}
+
 }
