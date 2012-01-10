@@ -3,15 +3,11 @@
 function path_to($name) {
 	$okapi = Okapi::singleton();
 	$paths = array();
-	$paths['root'] = dirname($_SERVER['PHP_SELF']);
-	// let it be empty if root is /
-	$paths['root'] = $paths['root'] == "/" ? '' : $paths['root'];
-	$paths['theme'] = $paths['root'] . '/application/themes/' . $okapi->config['theme'];
+	$paths['theme'] = URL_ROOT . 'application/themes/' . $okapi->config['theme'];
 
 	$paths['core'] = '/system/core';
 	switch ($name) {
 	case 'theme':
-	case 'root':
 	case 'core':
 		return $paths[$name];
 		break;
@@ -41,9 +37,9 @@ function generate_menu($menu_items, $nav_class='okapi-nav', $active_menu_item = 
 				$title = " title=\"{$item['title']}\"";
 
 			if ($active != null && (strtolower($active) == strtolower($item['text']) || (stripos($item['url'], $active) != false)))
-				echo "<a href=\"{$subdir}/{$item['url']}\" class=\"active\"{$title}{$external}>{$item['text']}</a>";
+				echo "<a href=\"" . URL_ROOT . "{$item['url']}\" class=\"active\"{$title}{$external}>{$item['text']}</a>";
 			else
-				echo "<a href=\"{$subdir}/{$item['url']}\"{$title}{$external}>{$item['text']}{$external_icon}</a>";
+				echo "<a href=\"" . URL_ROOT . "{$item['url']}\"{$title}{$external}>{$item['text']}{$external_icon}</a>";
 		}
 		echo $full_menu ? "</nav>" : '';
 	} else {

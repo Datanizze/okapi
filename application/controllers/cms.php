@@ -104,7 +104,7 @@ class Cms extends Controller {
 					break;
 				case 'delete':
 					$result = $this->cms->delete('articles', $action_key);
-					header("location: /cms/admin/cpage/");
+					header('location: ' . URL_ROOT . 'cms/admin/cpage/');
 					// below not used anymore... above header call is an ugly static workaround.. .:(
 					$this->_add_data($result, 'status');
 					$this->_add_data($this->cms->get('articles'), 'articles');
@@ -112,7 +112,7 @@ class Cms extends Controller {
 				case 'deactivate':
 					$result = $this->cms->$action('articles', $action_key);
 					echo $result;
-					header('location: /cms/admin/cpage/');
+					header('location: ' . URL_ROOT . 'cms/admin/cpage/');
 					// below not used anymore... above header call is an ugly static workaround.. .:(
 					$this->_add_data($result, 'status');
 					$this->_add_data($this->cms->get('articles'), 'articles');
@@ -161,10 +161,10 @@ class Cms extends Controller {
 		$this->_add_data($this->cms->do_login(), 'login_status');
 		if (isset($this->data['login_status']) && is_bool($this->data['login_status']) && $this->data['login_status']==true) {
 			if (!empty($forward_to)) {
-				$loc = 'location: /' . $forward_to;
+				$loc = 'location: ' . URL_ROOT . $forward_to;
 				header($loc);
 			} else {
-				header('location: /');
+				header('location: ' . URL_ROOT);
 			}
 		} else {
 			$this->load->view('login', $this->data);
