@@ -70,3 +70,28 @@ function get_active_menu_item($key='active_menu_item') {
 function sanitize_html($text) {	
 		return htmlspecialchars($text, ENT_NOQUOTES, 'UTF-8', false);
 }
+
+function site_theme_gallery($img_array, $rel, $echo = true) {
+	$first = true;
+	$tp = path_to('theme');
+	$ret = '<p>';
+
+	foreach($img_array as $img) {
+		$first = $first===true ? '' : 'display:none;';
+		$ret .= <<<COLORBOX
+<figure style="width:auto;{$first}">
+  <a href="{$tp}/img/{$img['href']}" title="{$img['title']}" class="{$rel}">
+    <img src="{$tp}/img/{$img['href']}" alt="image">
+    <figcaption>{$img['title']}</figcaption>
+  </a>
+</figure>
+COLORBOX;
+	}
+	
+	$ret .= '</p>';
+	
+	if ($echo)
+		echo $ret;
+	else 
+		return $ret;
+}
