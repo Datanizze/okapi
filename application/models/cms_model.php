@@ -122,7 +122,7 @@ class Cms_model extends Model {
 				// run query
 				$res = $this->db->query($query);
 				if ($res === true) { // TODO: think about how mysql works... insert on dupl_key could be update... oh well, let' do it manually for now.
-					@$retval = array('status' => 'success', 'message' => "<strong><a href=\"/page/{$data['key']}\">{$data['title']}</a></strong> was successfully saved!");
+					@$retval = array('status' => 'success', 'message' => "<strong><a href=\"" . URL_ROOT . "cms/page/{$data['key']}\">{$data['title']}</a></strong> was successfully saved!");
 				} else {
 					$retval = array('status' => 'error', 'message' => "Could not save <strong>{$data['key']}</strong>: {$res}");
 				}
@@ -145,7 +145,7 @@ class Cms_model extends Model {
 				// let's run the query!
 				$res = $this->db->query($query);
 				if ($res === true) { // TODO: think about how mysql works... insert on dupl_key could be update... oh well, let' do it manually for now.
-					@$retval = array('status' => 'success', 'message' => "<em>New</em> <strong><a href=\"/page/{$data['key']}\">{$data['title']}</a></strong> was successfully added!");
+					@$retval = array('status' => 'success', 'message' => "<em>New</em> <strong><a href=\"" . URL_ROOT ."cms/page/{$data['key']}\">{$data['title']}</a></strong> was successfully added!");
 				} else {
 					$retval = array('status' => 'error', 'message' => "Could not add <strong>{$data['key']}</strong>: <br> {$res}");
 				}
