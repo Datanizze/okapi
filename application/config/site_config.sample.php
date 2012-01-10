@@ -5,6 +5,7 @@ $site_config = array();
 $site_config['title'] = 'Okapi CMS'; // for <title> tag in <head>
 $site_config['header'] = '<h1>Header above main menu</h1>'; // html formatted
 
+$site_config['footer_text'] = 'This is the footer, you might want to put som contact information here... Or something else... I don\'t know';
 $site_config['copyright_holder'] = '';
 $site_config['copyright_notice'] = 'All rights reserved';
 

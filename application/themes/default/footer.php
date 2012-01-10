@@ -1,6 +1,6 @@
 </div> <!-- content span-24 wrapper div -->
 <footer class="okapi-footer span-24">
-<p>This is the footer, you might want to put som contact information here... Or something else... I don't know</p>
+<p><?php echo $site['footer_text'] ?></p>
 
 <small class="quiet">&copy; Copyright 
 <?php echo date('Y'); ?> 
