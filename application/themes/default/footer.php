@@ -1,6 +1,6 @@
 </div> <!-- content span-24 wrapper div -->
 <footer class="okapi-footer span-24">
-<p><?php echo $site['footer_text'] ?></p>
+<p><?php echo isset($site['footer_text']) ? $site['footer_text'] : 'This is the footer, you might want to put som contact information here... Or something else... I don\'t know'; ?></p>
 
 <small class="quiet">&copy; Copyright 
 <?php echo date('Y'); ?> 
