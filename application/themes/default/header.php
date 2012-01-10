@@ -1,4 +1,7 @@
-<?php $tp = path_to('theme'); ?>
+<?php 
+$tp = path_to('theme'); 
+$root = path_to('root'); 
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
