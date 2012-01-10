@@ -30,7 +30,7 @@
 foreach($articles as $article) { ?>
 	<tr class="okapi-table-row">
 		<td class="okapi-table-cell">
-			<a rel="tipsy" href="/page/<?php echo $article['key']; ?>" title="View article"><?php echo $article['key']; ?></a>
+			<a rel="tipsy" href="<?php echo URL_ROOT; ?>cms/page/<?php echo $article['key']; ?>" title="View article"><?php echo $article['key']; ?></a>
 		</td>
 		<td class="okapi-table-cell">
 			<?php echo $article['title']; ?>
@@ -38,7 +38,7 @@ foreach($articles as $article) { ?>
 		<td class="okapi-table-cell">
 			<?php
 			$article['content'] = sanitize_html($article['content']);
-			echo strlen($article['content']) >60 ? substr($article['content'],0,57) . '<a href="/page/' . $article['key'] . '" rel="tipsy" title="View the rest of this article">...</a>' : $article['content']; ?>
+			echo strlen($article['content']) >60 ? substr($article['content'],0,57) . '<a href="' . URL_ROOT . 'cms/page/' . $article['key'] . '" rel="tipsy" title="View the rest of this article">...</a>' : $article['content']; ?>
 		</td>
 		<td class="okapi-table-cell">
 			<?php echo $article['content_type']; ?>
