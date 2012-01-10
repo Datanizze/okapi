@@ -41,7 +41,7 @@ class Cms_model extends Model {
 
 	public function do_logout() {
 		$this->auth->logout();
-		header('location: /');
+		header('location: ' . URL_ROOT);
 	}
 
 	public function get_menu($auth = 0) { // $auth: 0 = get menuitems for users not logged in, 1 = opposite of 0, 2 = both 0 & 1 -1 = let this method decide with help from auth helper
