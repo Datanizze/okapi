@@ -27,6 +27,8 @@ $root = path_to('root');
 	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
 	<script src="<?php echo $tp; ?>/js/elrte.min.js" ></script>
 	<script src="<?php echo $tp; ?>/js/jquery.tipsy.js"></script>
+	<script src="<?php echo $tp; ?>/js/jquery.colorbox-min.js"></script>
+
 	<?php
 	if (isset($site) && isset($site['js'])) {
 		foreach ($site['js'] as $src) {
