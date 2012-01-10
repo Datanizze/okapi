@@ -140,7 +140,7 @@ class Cms extends Controller {
 		unset($okapi); // done... unset!
 
 		$authed = '<span class="';
-		$authed .= $this->logged_in ? 'success">Logged in. <a href="/cms/logout">Logout</a></span>' : 'error">Not logged in.</span>';
+		$authed .= $this->logged_in ? 'success">Logged in. <a href="' . URL_ROOT . 'cms/logout">Logout</a></span>' : 'error">Not logged in.</span>';
 
 		$this->_add_data($authed, 'authed');
 		$this->_add_data($this->cms->get_menu($this->logged_in ? 2 : 0), 'menu');
