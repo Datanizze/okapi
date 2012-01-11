@@ -22,7 +22,7 @@ class Model {
 		} 
 	}
 
-	private function get_array($sql_result, $free_result_when_done = true) {
+	protected function get_array($sql_result, $free_result_when_done = true) {
 		$ret = null;
 		if (is_object($sql_result) && $sql_result->num_rows > 0) {
 			$ret = array();
