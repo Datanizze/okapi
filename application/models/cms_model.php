@@ -11,13 +11,6 @@ class Cms_model extends Model {
 		unset($okapi); // done with okapi object, unset it!
 	}
 
-	public function get_site_info() {
-		if (file_exists(APPLICATION_PATH . '/config/site_config.php')) {
-			include(APPLICATION_PATH . '/config/site_config.php');
-			return $site_config;
-		} 
-	}
-
 	public function register($username, $password, $real_name, $email) {
 		return $this->auth->register($username, $password, $real_name, $email);
 	}
@@ -317,19 +310,5 @@ class Cms_model extends Model {
 		exit;
 		return $retval;
 	}
-
-	private function get_array($sql_result, $free_result_when_done = true) {
-		$ret = null;
-		if (is_object($sql_result) && $sql_result->num_rows > 0) {
-			$ret = array();
-			while ($row = $sql_result->fetch_assoc()) {
-				array_push($ret, $row);
-			}
-		} 
-		if($free_result_when_done)
-			$this->db->free_result();
-
-		return $ret;
-	}
-
+	
 }
