@@ -183,6 +183,7 @@ class Cms extends Controller {
 		if ($article == null) {
 			$this->four_o_four('page', $page_key);
 		} else {
+			set_active_menu_item($article[0]['key']);
 			$this->_add_data($article[0], 'article');
 			$this->load->view('page', $this->data);
 		}
