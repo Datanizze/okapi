@@ -6,9 +6,7 @@ class Cms extends Controller {
 		parent::__construct();
 		$this->_load_model();
 	}
-	// this array keeps track of everything that should go into the view(s)
-	// thus we will incrementally add to this variable when we have more data to add
-	private $data = array();
+	
 	private $logged_in = null;
 	private $theme_path = '';
 
@@ -146,12 +144,7 @@ class Cms extends Controller {
 		$this->_add_data($this->cms->get_menu($this->logged_in ? 2 : 0), 'menu');
 		$this->_add_data($this->cms->get_site_info(), 'site'); // things like, title, meta, extra js/css and so on...
 	}
-
-	private function _add_data($new_data, $key='') {
-		if ($new_data !=null && !empty($new_data)) 
-			$this->data[$key] = $new_data;
-	}
-
+	
 	public function login($forward_to='') {
 		set_active_menu_item('login');
 		if(!empty($_POST['forward_to']))
@@ -179,18 +172,7 @@ class Cms extends Controller {
 		echo 'Installing CMS database tables';
 		$install = $this->cms->do_install($this->logged_in);
 	}
-
-	public function __call($action, $params) {
-		$this->four_o_four($action, $params);
-	}
-
-	public function four_o_four($action, $params='') {
-		header("HTTP/1.0 404 Not Found");
-		$this->_add_data($action);
-		$this->_add_data($params);
-		$this->load->view('404', $this->data);
-	}
-
+	
 	public function page($page_key='') {
 		$show_deactivated = false;
 		if ($this->logged_in) {
