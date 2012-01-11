@@ -36,7 +36,7 @@ function generate_menu($menu_items, $nav_class='okapi-nav', $active_menu_item = 
 			if (isset($item['title']) && !empty($item['title']))
 				$title = " title=\"{$item['title']}\"";
 
-			if ($active != null && (strtolower($active) == strtolower($item['text']) || (stripos($item['url'], $active))))
+			if (($active != null) && (strtolower($active) == strtolower($item['text']) || (is_numeric(stripos($item['url'], $active)))))
 				echo "<a href=\"" . URL_ROOT . "{$item['url']}\" class=\"active\"{$title}{$external}>{$item['text']}</a>";
 			else
 				echo "<a href=\"" . URL_ROOT . "{$item['url']}\"{$title}{$external}>{$item['text']}{$external_icon}</a>";
